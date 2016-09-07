@@ -1,0 +1,15 @@
+Assembly-CSharp-*
+Assembly-CSharp.csproj
+Builds/*
+Desert Network Flight.sln
+Desert Network Flight.userprefs
+Temp/
+Library/
+Obj/
+
+*.csproj
+*.unityproj
+*.sln
+*.user
+*.userprefs
+*.DS_store

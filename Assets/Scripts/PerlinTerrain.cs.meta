@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 37a95f33cda8c45e8bbb4c3df3c80606
+timeCreated: 1471726044
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - kit: {instanceID: 0}
+  - sandTexture: {fileID: 2800000, guid: bfd675cc0db1d4656b75dc6d6ba91142, type: 3}
+  - grassTexture: {fileID: 2800000, guid: c6e0767b1f8c34890ac245217f4b9731, type: 3}
+  - rockTexture: {fileID: 2800000, guid: ef5c51cfa2ce46043a41a376b560c525, type: 3}
+  - cliffTexture: {fileID: 2800000, guid: 18214e9d6af6248559d501391856f1c7, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
