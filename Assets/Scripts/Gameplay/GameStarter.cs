@@ -2,8 +2,6 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
 
 
 
@@ -16,10 +14,28 @@ public class GameStarter : MonoBehaviour
     public GameObject pickUpPrefab;
     public GameObject scorePrefab;
     public float pickUpPositionY = 50.0f;
+    public float loadDelay = 10.0f;
     public string roomName = "";
+    //Toolkit instance.
+    [SerializeField]TerrainToolkit kit;
+    //Array of textures.
+    [SerializeField]Texture2D sandTexture;
+    [SerializeField]Texture2D grassTexture;
+    [SerializeField]Texture2D rockTexture;
+    [SerializeField]Texture2D cliffTexture;
 
     GameConfig GameConfig;
 
+//    IEnumerator Start()
+//    {
+//        yield return StartCoroutine(MyDelayMethod(3.1415f));
+//        //3.1415 seconds later
+//    }
+//
+//    IEnumerator MyDelayMethod(float delay)
+//    {
+//        yield return new WaitForSeconds(delay);
+//    }
 
 
     void Start()
@@ -31,19 +47,46 @@ public class GameStarter : MonoBehaviour
                 Instantiate(photonNetworkManager, Vector3.zero, Quaternion.identity);
             }
 
+//            StartCoroutine(DelayForLoading());
+//            GenerateTerrain();
 
             if (PhotonNetwork.inRoom) {
                 AddPlayer();    
             }
 
+            // TODO: FIND OUT - Is this happening before the TERRAIN EXISTS???
             if (PhotonNetwork.isMasterClient) {
                 AddPickUps();
             }
         } else {
+//            GenerateTerrain();
             AddPlayer(GameConfig.isSoloGame);    
             AddPickUps(GameConfig.isSoloGame);
         }
     }
+
+
+
+//    void GenerateTerrain()
+//    {
+//        GameObject terrain = GameObject.Find("Environment/Terrain");
+//
+//        if (!terrain) 
+//        {
+//            Debug.Log("Error: Could not locate Terrain GameObject.");
+//            return;
+//        }
+//
+//        PerlinTerrain terrainScript = terrain.GetComponent<PerlinTerrain>();
+//
+//        if (!terrainScript) 
+//        {
+//            Debug.Log("Error: Could not locate PerlinTerrain component");
+//            return;
+//        }
+//
+//        terrainScript.PrepareAndGenerateTerrain();
+//    }
 
 
 
@@ -109,37 +152,15 @@ public class GameStarter : MonoBehaviour
             }
         }
     }
+
+
+
+//    IEnumerator DelayForLoading()
+//    {
+//        Debug.Log("WHY AREN'T YOU BEING CALLED?");
+//        print(Time.time);
+//        Debug.Log("KJDHSFHJKSDFHJKSDFKHJSDFHJK");
+//        yield return new WaitForSeconds(loadDelay);
+//        print(Time.time);
+//    }
 }
-
-
-
-
-
-
-
-//
-//Here's code for both catching the submission (this happens when you press a button that is set as Submit in the input system - Enter by default) and using a button to submit:
-//
-//(include UnityEngine.UI for access to UI components)
-//
-//[SerializeField]
-//private InputField nameInputField = null;
-//
-//[SerializeField]
-//private Button submitButton = null;
-//
-//private void Start()
-//{
-//    // Add listener to catch the submit (when set Submit button is pressed)
-//    nameInputField.onSubmit.AddListener((value) => SubmitName(value));
-//    // Add validation
-//    nameInputField.validation = InputField.Validation.Alphanumeric;
-//
-//    // This is a setup for a button that grabs the field value when pressed
-//    submitButton.onClick.AddListener(() => SubmitName(nameInputField.value));
-//}
-//
-//private void SubmitName(string name)
-//{
-//    //What to do with the value from input field
-//}

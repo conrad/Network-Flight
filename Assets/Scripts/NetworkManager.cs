@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class NetworkManager : MonoBehaviour 
 {
-    public GameObject gameConfiguration;
     public GameObject ObjectHandler;
     public InputField roomInput;
     public string roomName = "";

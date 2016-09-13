@@ -23,7 +23,7 @@ public class ObjectPlacer
     {
         bool placed = false;
         int attempts = 0;
-        int pickUpPositionYInt = (int) pickUpPositionY;
+//        int pickUpPositionYInt = (int) pickUpPositionY;
         float relPickUpHeight = Random.Range(2.0f, 50.0f);
 
         float pickUpPositionX = Random.Range(-450.0f, 450.0f);
@@ -34,13 +34,16 @@ public class ObjectPlacer
         while (!placed && attempts < attemptLimit) {
             pickUpPosition = new Vector3(pickUpPositionX, pickUpPositionY, pickUpPositionZ);
             RaycastHit hit;
-            Ray placementRay = new Ray(pickUpPosition, Vector3.down);
+            Vector3 direction = Vector3.down * relPickUpHeight; // new Vector3(0f, -relPickUpHeight, 0f);
+//            Ray placementRay = new Ray(pickUpPosition, direction);
 
-            if (Physics.Raycast(placementRay, out hit, relPickUpHeight)) {
-                if (hit.collider.tag == "Ground") {
+//            if (Physics.Raycast(pickUpPosition, direction, relPickUpHeight + 2f)) {
+//            if (Physics.Raycast(placementRay, out hit, relPickUpHeight + 2f)) {
+            if (Physics.Raycast(pickUpPosition, direction, out hit)) {
+//                if (hit.collider.tag == "Ground") {
                     placed = true;
-                    Debug.Log("Ray hit & placed at " + pickUpPositionY);
-                }
+                    Debug.Log("SHAZAM! Ray hit & placed at " + pickUpPositionY);
+//                }
             }
 
             if (pickUpPositionY < relPickUpHeight + 1f) {
@@ -53,7 +56,7 @@ public class ObjectPlacer
         }
 
         if (!placed) {
-            pickUpPosition = new Vector3(pickUpPositionX, Random.Range(5.0f, 50.0f), pickUpPositionZ);;
+            pickUpPosition = new Vector3(pickUpPositionX, Random.Range(10.0f, 200.0f), pickUpPositionZ);;
         }
 
         return pickUpPosition;

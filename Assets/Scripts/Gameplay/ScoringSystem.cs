@@ -3,12 +3,17 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Runtime.InteropServices;
 
 
 
+/**
+ * A class to track all players and their scores and trigger the view updates based on changes.
+ */ 
 public class ScoringSystem : Photon.MonoBehaviour 
 {
     public GameObject gameOverView;
+    public float timeLimit = 120f;
 
     private int[] scores = new int[6]; 
     private Dictionary<int, Score> scoreboardScripts = new Dictionary<int, Score>();
@@ -22,6 +27,17 @@ public class ScoringSystem : Photon.MonoBehaviour
         GameConfig = GameConfig.Instance();
         SetInitialHighScorerData();
         highScorerData["totalScored"] = 0;
+    }
+
+
+    /**
+     * Check whether game has gone over time, and end if it has.
+     */ 
+    void Update()
+    {
+        if (Time.fixedTime > timeLimit) {
+            ShowGameOver(highScorerData["player"]);
+        }
     }
 
 
@@ -55,6 +71,7 @@ public class ScoringSystem : Photon.MonoBehaviour
 
 
     public void SetScore(int playerNumber, int score) {
+        Debug.Log("SetScore called in ScoringSystem for player " + playerNumber + " to " + score + " points");
         scores[playerNumber] = score;
         highScorerData["totalScored"]++;
         scoreboardScripts[playerNumber].UpdateScoreView(playerNumber, scores[playerNumber]);

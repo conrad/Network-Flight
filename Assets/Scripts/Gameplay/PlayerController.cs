@@ -183,6 +183,7 @@ public class PlayerController : Photon.MonoBehaviour
     {
         if (other.gameObject.CompareTag("Pick Up")) 
         {
+            Debug.Log("OnTriggerEnter collision detected with " + other);
             // TODO: Play a sound here from the location of the pickUp
             other.gameObject.SetActive (false);
             score += 1;

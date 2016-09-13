@@ -13,7 +13,9 @@ public class PerlinTerrain : MonoBehaviour {
 
 
 
+
     void Start() {
+//    public void PrepareAndGenerateTerrain() {
         //Check if we have the kit assigned;.
         if (kit == null) {
             //If there is not an instance assigned or on gameObject, return.
@@ -35,7 +37,7 @@ public class PerlinTerrain : MonoBehaviour {
 
 
 
-    void OnGUI(){
+    void OnGUI() {
         if (GUILayout.Button ("Generate")) {
             Generate(); 
         }
@@ -64,6 +66,7 @@ public class PerlinTerrain : MonoBehaviour {
         terrainTextures[3] = rockTexture;
         //Paints the textures.
         kit.TextureTerrain(slopeStops, heightStops, terrainTextures);
+        Debug.Log("DONE GENERATING TERRAIN");
     }
 
 

@@ -56,9 +56,10 @@ public class MenuObjectHandler : MonoBehaviour
         totalPlayersView.GetComponent<Text>().enabled = true;
     }
 
+
+
     public void UpdatePlayerNumber(int numberOfPlayers)
     {
-        Debug.Log("updatePlayerNumber fired");
         totalPlayers = numberOfPlayers;
         totalPlayersView.text = totalPlayers + " players total";
     }

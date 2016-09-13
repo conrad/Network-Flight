@@ -37,7 +37,7 @@ public class GameOver : MonoBehaviour
 
     private void SetGameOverText()
     {
-        setMeshes();
+        SetMeshes();
         Debug.Log("gameOverTextMesh in setGameOverText " + gameOverTextMesh);
         gameOverTextMesh.text = "Player " + winner + " Wins!";
     }
@@ -50,7 +50,7 @@ public class GameOver : MonoBehaviour
         countdownTextMesh.text = Mathf.RoundToInt(time).ToString(); 
     }
 
-    void setMeshes()
+    void SetMeshes()
     {
         gameOverTextMesh = gameOverObject.GetComponent<TextMesh>();
         countdownTextMesh = gameOverObject.GetComponent<TextMesh>();
