@@ -16,8 +16,6 @@ public class GameStarter : MonoBehaviour
     public float pickUpPositionY = 50.0f;
     public float loadDelay = 10.0f;
     public string roomName = "";
-    //Toolkit instance.
-    [SerializeField]TerrainToolkit kit;
     //Array of textures.
     [SerializeField]Texture2D sandTexture;
     [SerializeField]Texture2D grassTexture;
@@ -26,68 +24,32 @@ public class GameStarter : MonoBehaviour
 
     GameConfig GameConfig;
 
-//    IEnumerator Start()
-//    {
-//        yield return StartCoroutine(MyDelayMethod(3.1415f));
-//        //3.1415 seconds later
-//    }
-//
-//    IEnumerator MyDelayMethod(float delay)
-//    {
-//        yield return new WaitForSeconds(delay);
-//    }
 
 
     void Start()
     {
         GameConfig = GameConfig.Instance();  // Use this method make sure you use singleton.
 
-        if (!GameConfig.isSoloGame) {
-            if (GameObject.Find("PhotonNetworkManager") == null) {
-                Instantiate(photonNetworkManager, Vector3.zero, Quaternion.identity);
-            }
+//        GenerateTerrain();
 
-//            StartCoroutine(DelayForLoading());
-//            GenerateTerrain();
+        if (!GameConfig.isSoloGame) {
+//            if (GameObject.Find("PhotonNetworkManager") == null) {
+//                Instantiate(photonNetworkManager, Vector3.zero, Quaternion.identity);
+//            }
 
             if (PhotonNetwork.inRoom) {
-                AddPlayer();    
+                AddPlayer(GameConfig.isSoloGame);    
             }
 
-            // TODO: FIND OUT - Is this happening before the TERRAIN EXISTS???
             if (PhotonNetwork.isMasterClient) {
-                AddPickUps();
+                AddPickUps(GameConfig.isSoloGame);
             }
         } else {
-//            GenerateTerrain();
             AddPlayer(GameConfig.isSoloGame);    
             AddPickUps(GameConfig.isSoloGame);
         }
     }
-
-
-
-//    void GenerateTerrain()
-//    {
-//        GameObject terrain = GameObject.Find("Environment/Terrain");
-//
-//        if (!terrain) 
-//        {
-//            Debug.Log("Error: Could not locate Terrain GameObject.");
-//            return;
-//        }
-//
-//        PerlinTerrain terrainScript = terrain.GetComponent<PerlinTerrain>();
-//
-//        if (!terrainScript) 
-//        {
-//            Debug.Log("Error: Could not locate PerlinTerrain component");
-//            return;
-//        }
-//
-//        terrainScript.PrepareAndGenerateTerrain();
-//    }
-
+        
 
 
     void AddPlayer(bool isSoloGame = false) {
@@ -99,11 +61,11 @@ public class GameStarter : MonoBehaviour
             GameObject newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.transform.position, spawnPoint.transform.rotation, 0);
             newPlayer.GetComponent<PlayerController>().playerNumber = GameConfig.playerNumber;
         } else {
-            GameObject newPlayer = GameObject.Instantiate(playerPrefab);
-            newPlayer.transform.position = spawnPoint.transform.position;
+            GameObject newPlayer = GameObject.Instantiate(playerPrefab, spawnPoint.transform.position, Quaternion.identity) as GameObject;
+//            newPlayer.transform.position = spawnPoint.transform.position;
             newPlayer.GetComponent<PlayerController>().playerNumber = 1;
         }
-
+      
 //        Debug.Log("actual initial position of newPlayer: " + newPlayer.transform.position);
 //        Debug.Log("newPlayer: " + newPlayer);
 //        Debug.Log("actual playerNumber " + newPlayer.GetComponent<PlayerController>().playerNumber);
@@ -152,6 +114,15 @@ public class GameStarter : MonoBehaviour
             }
         }
     }
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -163,4 +134,47 @@ public class GameStarter : MonoBehaviour
 //        yield return new WaitForSeconds(loadDelay);
 //        print(Time.time);
 //    }
-}
+
+
+
+
+//    void GenerateTerrain()
+//    {
+//        GameObject terrain = GameObject.Find("Environment/Terrain");
+//
+//        if (!terrain) 
+//        {
+//            Debug.Log("Error: Could not locate Terrain GameObject.");
+//            return;
+//        }
+//
+//        TerrainToolkit kit = terrain.GetComponent<TerrainToolkit>();
+//
+//        if (!kit) 
+//        {
+//            Debug.Log("Error: Could not locate PerlinTerrain component");
+//            return;
+//        }
+//
+//        //Generate the perlin terrain.
+//        kit.PerlinGenerator((int)Random.Range(3,6),Random.Range(0.4f,0.9f),Random.Range(2,6), 1f);
+//        //Gives it a less smooth feel.
+//        kit.PerlinGenerator(4,4,4, 0.1f);
+//        //Creates arrays for stops.
+//        float[] slopeStops = new float[2];
+//        float[] heightStops = new float[4];
+//        Texture2D[] terrainTextures = new Texture2D[4];
+//        //Assigns values to the arrays.
+//        slopeStops[0] = 30f; slopeStops[1] = 70f;
+//        heightStops[0] = Random.Range(0.05f, 0.18f);
+//        heightStops[1] = Random.Range(0.19f, 0.49f);
+//        heightStops[2] = Random.Range(0.5f, 0.69f);
+//        heightStops[3] = Random.Range(0.7f, 0.89f);
+//        terrainTextures[0] = cliffTexture;
+//        terrainTextures[1] = sandTexture;
+//        terrainTextures[2] = grassTexture;
+//        terrainTextures[3] = rockTexture;
+//        //Paints the textures.
+//        kit.TextureTerrain(slopeStops, heightStops, terrainTextures);
+//        Debug.Log("DONE GENERATING TERRAIN");
+//    }

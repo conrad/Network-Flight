@@ -64,14 +64,12 @@ public class ScoringSystem : Photon.MonoBehaviour
     public void AddPlayer(int playerNumber) {
         scores[playerNumber] = 0;
         UpdateScoreboardScriptCollection();
-        Debug.Log("scoreboardScripts " + scoreboardScripts);
         scoreboardScripts[playerNumber].UpdateScoreView(playerNumber, scores[playerNumber]);
     }
 
 
 
     public void SetScore(int playerNumber, int score) {
-        Debug.Log("SetScore called in ScoringSystem for player " + playerNumber + " to " + score + " points");
         scores[playerNumber] = score;
         highScorerData["totalScored"]++;
         scoreboardScripts[playerNumber].UpdateScoreView(playerNumber, scores[playerNumber]);
@@ -116,8 +114,6 @@ public class ScoringSystem : Photon.MonoBehaviour
      * TODO: Should this be called setScores and just call setScore in a for loop???
      */
     private void UpdateView(int[] newScores) {
-        Debug.Log("updateView called");
-
         SetInitialHighScorerData();
 
         for (int i = 1; i < scores.Length; i++) {

@@ -14,26 +14,26 @@ public class PerlinTerrain : MonoBehaviour {
 
 
 
-    void Start() {
-//    public void PrepareAndGenerateTerrain() {
-        //Check if we have the kit assigned;.
-        if (kit == null) {
-            //If there is not an instance assigned or on gameObject, return.
-            if (!GetComponent<TerrainToolkit>())
-            {
-                // !transform.gameObject.GetComponent<TerrainToolkit>()
-                Debug.Log("Could not locate TerrainToolkit component");
-                return;
-            }
-            //Else assign kit to gameObject's toolkit.
-            else
-            {
-                kit = GetComponent<TerrainToolkit>();
-            }
-        }
-        //Generate the terrain.
-        Generate();
-    }
+//    void Start() {
+////    public void PrepareAndGenerateTerrain() {
+//        //Check if we have the kit assigned;.
+//        if (kit == null) {
+//            //If there is not an instance assigned or on gameObject, return.
+//            if (!GetComponent<TerrainToolkit>())
+//            {
+//                // !transform.gameObject.GetComponent<TerrainToolkit>()
+//                Debug.Log("Could not locate TerrainToolkit component");
+//                return;
+//            }
+//            //Else assign kit to gameObject's toolkit.
+//            else
+//            {
+//                kit = GetComponent<TerrainToolkit>();
+//            }
+//        }
+//        //Generate the terrain.
+//        Generate();
+//    }
 
 
 

@@ -6,7 +6,6 @@
 public class GameConfig
 {
     public static GameConfig _instance = null;
-
     public string defaultRoomName = "BuddyRace";
     public int numPlayersForGame = 1;
     public float playerSpeed = 30f;
@@ -16,6 +15,9 @@ public class GameConfig
     public int playerNumber;
     public bool isSoloGame = true;      // TODO: Change this value to false for multiplayer.
 
+    private bool isInstantiated = false;
+
+
 
     // TODO: Create public getters for all of these variables and make the variables private.
 
@@ -23,7 +25,12 @@ public class GameConfig
 
     public GameConfig() 
     {
-        Debug.Log("GameConfig constructor. This should be called only once.");
+        if (isInstantiated) 
+        {
+            Debug.Log("Trying to call GameConfig constructor a second time. This should be called only once.");
+        }
+
+        isInstantiated = true;
     }
 
 

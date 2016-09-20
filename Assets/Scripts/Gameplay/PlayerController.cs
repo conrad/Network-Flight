@@ -27,12 +27,9 @@ public class PlayerController : Photon.MonoBehaviour
 
 
 	void Start () {
-        Debug.Log("Starting player controller");
         GameConfig = GameConfig.Instance();
 
         if (photonView.isMine || GameConfig.isSoloGame)  {
-            Debug.Log("Setting up my player in PlayerController");
-
             startPhotonIsMineCalled = true;
             rb = GetComponent<Rigidbody>();
             forwardSpeed = GameConfig.playerSpeed;
@@ -156,8 +153,27 @@ public class PlayerController : Photon.MonoBehaviour
 
 
 
-    // while alive do this state-machine
-    // Make this a co-routine in order to avoid hogging resources.
+    void OnTriggerEnter(Collider other) 
+    {
+        if (other.gameObject.CompareTag("Pick Up")) 
+        {
+            Debug.Log("OnTriggerEnter collision detected with " + other);
+            // TODO: Play a sound here from the location of the pickUp
+            other.gameObject.SetActive (false);
+            score += 1;
+            scoringScript.SetScore(playerNumber, score);
+        }
+    }
+}
+
+
+
+
+//////////////////////////////////////////////////////
+// FOR LERPING - MAKING MOVEMENTS LOOKS SMOOTH
+//////////////////////////////////////////////////////
+// while alive do this state-machine
+// Make this a co-routine in order to avoid hogging resources.
 //    IEnumerator Alive()
 //    {
 //        while(isAlive) {
@@ -176,21 +192,9 @@ public class PlayerController : Photon.MonoBehaviour
 //            yield return null;
 //        }
 //    }
+//////////////////////////////////////////////////////
 
 
-
-    void OnTriggerEnter(Collider other) 
-    {
-        if (other.gameObject.CompareTag("Pick Up")) 
-        {
-            Debug.Log("OnTriggerEnter collision detected with " + other);
-            // TODO: Play a sound here from the location of the pickUp
-            other.gameObject.SetActive (false);
-            score += 1;
-            scoringScript.SetScore(playerNumber, score);
-        }
-    }
-}
 
 
 
