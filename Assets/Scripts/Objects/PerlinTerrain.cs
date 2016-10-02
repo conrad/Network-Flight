@@ -14,33 +14,9 @@ public class PerlinTerrain : MonoBehaviour {
 
 
 
-//    void Start() {
-////    public void PrepareAndGenerateTerrain() {
-//        //Check if we have the kit assigned;.
-//        if (kit == null) {
-//            //If there is not an instance assigned or on gameObject, return.
-//            if (!GetComponent<TerrainToolkit>())
-//            {
-//                // !transform.gameObject.GetComponent<TerrainToolkit>()
-//                Debug.Log("Could not locate TerrainToolkit component");
-//                return;
-//            }
-//            //Else assign kit to gameObject's toolkit.
-//            else
-//            {
-//                kit = GetComponent<TerrainToolkit>();
-//            }
-//        }
-//        //Generate the terrain.
-//        Generate();
-//    }
-
-
-
-    void OnGUI() {
-        if (GUILayout.Button ("Generate")) {
-            Generate(); 
-        }
+    void Start() 
+    {
+        Generate();
     }
 
 
@@ -95,5 +71,13 @@ public class PerlinTerrain : MonoBehaviour {
         //Paints the textures.
         kit.TextureTerrain(slopeStops, heightStops, terrainTextures);
     }
-
 }
+
+
+
+    // If you want a button for generating a new terrain at any point:
+    //    void OnGUI() {
+    //        if (GUILayout.Button ("Generate")) {
+    //            Generate(); 
+    //        }
+    //    }

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Threading;
+using System;
+using UnityEngine.SceneManagement;
+
+
 
 public class GameOver : MonoBehaviour 
 {
@@ -9,7 +12,9 @@ public class GameOver : MonoBehaviour
     public string winner;
 
 //    private GameObject playerView;
-    private float time = 10.0f; 
+    private float totalCountDownTime = 10.0f;
+    private float countDownTime;
+    private float gameOverTime;
     private TextMesh gameOverTextMesh;
     private TextMesh countdownTextMesh;
 
@@ -17,47 +22,65 @@ public class GameOver : MonoBehaviour
 
     void Start()
     {
-        gameOverTextMesh = gameOverObject.GetComponent<TextMesh>();
-        countdownTextMesh = gameOverObject.GetComponent<TextMesh>();
+        gameOverTime = Time.fixedTime;
+        countDownTime = totalCountDownTime;
 
-        countdownTextMesh.text = Mathf.RoundToInt(time).ToString();
-        gameOverTextMesh.text = "waiting...";
-        Debug.Log("gameOverTextMesh in Start " + gameOverTextMesh);
+        gameOverTextMesh = gameOverObject.GetComponent<TextMesh>();
+        countdownTextMesh = countdownObject.GetComponent<TextMesh>();
+
+        SetGameOverMesh();
+        SetCountdownMesh();
     }
 
 
 
     public void SetWinner(int winnerNum)
     {
-        Debug.Log("setWinner");
         winner = winnerNum.ToString();
-
-        SetGameOverText();
     }
 
-    private void SetGameOverText()
-    {
-        SetMeshes();
-        Debug.Log("gameOverTextMesh in setGameOverText " + gameOverTextMesh);
-        gameOverTextMesh.text = "Player " + winner + " Wins!";
-    }
 
 
     void Update() 
     {
-        // Update the number for the countdown:  ceiling    
-        time =- Time.deltaTime; 
-        countdownTextMesh.text = Mathf.RoundToInt(time).ToString(); 
+        SetCountdownMesh();
+
+        if (countDownTime <= 0) {
+            ReturnToMenu();
+        }
     }
 
-    void SetMeshes()
+
+
+    void SetGameOverMesh()
     {
-        gameOverTextMesh = gameOverObject.GetComponent<TextMesh>();
-        countdownTextMesh = gameOverObject.GetComponent<TextMesh>();
+        if (winner != "0") {
+            gameOverTextMesh.text = "Player " + winner + " wins!";
+        } else {
+            gameOverTextMesh.text = "Game Over";
+        }
+    }
 
-        countdownTextMesh.text = Mathf.RoundToInt(time).ToString();
-        gameOverTextMesh.text = "waiting...";
 
+
+    void SetCountdownMesh()
+    {
+        countDownTime = totalCountDownTime - (Time.fixedTime - gameOverTime);
+        countDownTime = countDownTime > 0 ? countDownTime : 0;
+
+        countdownTextMesh.text = Math.Ceiling(countDownTime).ToString();
+    }
+
+
+
+    void ReturnToMenu()
+    {
+//        PhotonNetwork.Disconnect ();
+//        while (PhotonNetwork.connected) {
+//            yield return null;         // Will this work? ...Freezes it.
+//        }
+
+        SceneManager.LoadScene("Menu");
     }
 }
 

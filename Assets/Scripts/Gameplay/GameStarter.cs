@@ -23,20 +23,14 @@ public class GameStarter : MonoBehaviour
     [SerializeField]Texture2D cliffTexture;
 
     GameConfig GameConfig;
-
-
+    ObjectPlacer objectPlacer;
 
     void Start()
     {
         GameConfig = GameConfig.Instance();  // Use this method make sure you use singleton.
-
-//        GenerateTerrain();
+        objectPlacer = new ObjectPlacer();
 
         if (!GameConfig.isSoloGame) {
-//            if (GameObject.Find("PhotonNetworkManager") == null) {
-//                Instantiate(photonNetworkManager, Vector3.zero, Quaternion.identity);
-//            }
-
             if (PhotonNetwork.inRoom) {
                 AddPlayer(GameConfig.isSoloGame);    
             }
@@ -55,37 +49,44 @@ public class GameStarter : MonoBehaviour
     void AddPlayer(bool isSoloGame = false) {
         initialCamera.SetActive(false);
 
-        Debug.Log("Spawn Point: " + spawnPoint);
-        Debug.Log("Spawn Point position: " + spawnPoint.transform.position);
+        Vector3 playerPosition = objectPlacer.GenerateRandomObjectPosition(
+            new Vector3(400f, 700f, 400f),
+            new Vector3(-400f, 0f, -400f),
+            5f
+        );
+
         if (!isSoloGame) {
-            GameObject newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.transform.position, spawnPoint.transform.rotation, 0);
+            GameObject newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, playerPosition, Quaternion.identity, 0);
             newPlayer.GetComponent<PlayerController>().playerNumber = GameConfig.playerNumber;
         } else {
-            GameObject newPlayer = GameObject.Instantiate(playerPrefab, spawnPoint.transform.position, Quaternion.identity) as GameObject;
-//            newPlayer.transform.position = spawnPoint.transform.position;
+//            GameObject newPlayer = Instantiate(playerPrefab);
+            GameObject newPlayer = Instantiate(playerPrefab, playerPosition, Quaternion.identity) as GameObject;
+            //            newPlayer.transform.position = spawnPoint.transform.position;
+            newPlayer.transform.FindChild("Suited Man").position = newPlayer.transform.position;
+            newPlayer.transform.FindChild("GvrMain").position = newPlayer.transform.position;
+            newPlayer.transform.FindChild("PlayerCollider").position = newPlayer.transform.position;
+
+
             newPlayer.GetComponent<PlayerController>().playerNumber = 1;
         }
       
-//        Debug.Log("actual initial position of newPlayer: " + newPlayer.transform.position);
-//        Debug.Log("newPlayer: " + newPlayer);
-//        Debug.Log("actual playerNumber " + newPlayer.GetComponent<PlayerController>().playerNumber);
-        Debug.Log("config playerNumber " + GameConfig.playerNumber);
         AddPlayerScore(GameConfig.playerNumber, GameConfig.isSoloGame);
     }
 
 
-
-    void AddPlayerScore(int playerNumber, bool isSoloGame = false) {
-        // Add Player's Score to Scene.
+    // Add Player's Score to the Scene.
+    void AddPlayerScore(int playerNumber, bool isSoloGame = false) 
+    {
         if (!isSoloGame) {
             GameObject playerScore = PhotonNetwork.Instantiate(
                                          scorePrefab.name, 
                                          new Vector3(0f, 700f + (playerNumber * 40), 0f),
-                                         spawnPoint.transform.rotation,
+                                         Quaternion.identity,
                                          0
                                      );
 
             playerScore.GetComponent<Score>().playerNumber = playerNumber;
+        
         } else {
             GameObject playerScore = Instantiate(scorePrefab);
 
@@ -94,13 +95,16 @@ public class GameStarter : MonoBehaviour
     }
 
 
-
+    // Add the items to pick up to the Scene.
     void AddPickUps(bool isSoloGame = false) {
         Debug.Log("Adding " + GameConfig.totalPickUps + " pick ups to scene");
         for (var i = 0; i < GameConfig.totalPickUps; i++) {
+            Vector3 pickUpPosition = objectPlacer.GenerateRandomObjectPosition(
+                new Vector3(400f, 700f, 400f),
+                new Vector3(-400f, 0f, -400f),
+                5f
+            );
 
-            ObjectPlacer objectPlacer = new ObjectPlacer();
-            Vector3 pickUpPosition = objectPlacer.GenerateGameObjectPosition();
             if (!isSoloGame) {
                 PhotonNetwork.Instantiate(
                     pickUpPrefab.name, 

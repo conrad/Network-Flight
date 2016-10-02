@@ -14,9 +14,10 @@ public class GameConfig
     public string VERSION = "v0.0.1";
     public int playerNumber;
     public bool isSoloGame = true;      // TODO: Change this value to false for multiplayer.
+    public Vector3 farTopRightCorner = new Vector3(400f, 700f, 400f);
+    public Vector3 nearBottomLeftCorner = new Vector3(-400f, 0f, -400f);
 
     private bool isInstantiated = false;
-
 
 
     // TODO: Create public getters for all of these variables and make the variables private.

@@ -34,9 +34,7 @@ public class PlayerController : Photon.MonoBehaviour
             rb = GetComponent<Rigidbody>();
             forwardSpeed = GameConfig.playerSpeed;
             playerLocal = this.transform.Find("GvrMain/Head/Main Camera/Main Camera Left");
-
-            this.transform.SetParent(playerLocal);
-            this.transform.localPosition = Vector3.zero;
+//            this.transform.SetParent(playerLocal);
 
             if (GameConfig.isSoloGame) {
                 avatar.SetActive(false);    // TODO: Fix avatar positioning not to be in way in solo game.

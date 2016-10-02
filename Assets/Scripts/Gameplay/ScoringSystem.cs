@@ -13,17 +13,18 @@ using System.Runtime.InteropServices;
 public class ScoringSystem : Photon.MonoBehaviour 
 {
     public GameObject gameOverView;
-    public float timeLimit = 120f;
+    public float timeLimit = 10f;
 
     private int[] scores = new int[6]; 
     private Dictionary<int, Score> scoreboardScripts = new Dictionary<int, Score>();
     private Dictionary<string, int> highScorerData = new Dictionary<string, int>();
     GameConfig GameConfig;
-
-
+    private bool isShowGameOverRevealed = false;
+    private float startTime;
 
     void Start() 
     {
+        startTime = Time.fixedTime;
         GameConfig = GameConfig.Instance();
         SetInitialHighScorerData();
         highScorerData["totalScored"] = 0;
@@ -35,8 +36,8 @@ public class ScoringSystem : Photon.MonoBehaviour
      */ 
     void Update()
     {
-        if (Time.fixedTime > timeLimit) {
-            ShowGameOver(highScorerData["player"]);
+        if (Time.fixedTime > (timeLimit + startTime)) {
+            ShowGameOverOnce(highScorerData["player"]);
         }
     }
 
@@ -164,11 +165,22 @@ public class ScoringSystem : Photon.MonoBehaviour
         return totalScored >= GameConfig.totalPickUps;
     }
 
+    // Invoke ShowGameOver if it hasn't already been called.
+    private void ShowGameOverOnce(int winnerNum)
+    {
+        if (!isShowGameOverRevealed) {
+            ShowGameOver(highScorerData["player"]);
+            isShowGameOverRevealed = true;
+        }
+    }
 
 
-    private void ShowGameOver(int winnerNum = 0) {
-        Debug.Log("showGameOver triggered!");
-
+    /**
+     * When game is over, instantiate a GameOverView object, pass it the winner, and position it. 
+     * Let the GameOverView object handle the rest.
+     */ 
+    private void ShowGameOver(int winnerNum = 1) 
+    {
         GameObject[] playerViewObjects = GameObject.FindGameObjectsWithTag("Left Camera");
 
         foreach (GameObject playerView in playerViewObjects) {
@@ -180,12 +192,8 @@ public class ScoringSystem : Photon.MonoBehaviour
             ) as GameObject;
 
             GameOver gameOverScript = gameOver.GetComponent<GameOver>();
-//            GameObject gameOverTextObject = gameOver.Find("Game Over");
-//            GameObject countdownTextObject = gameOver.Find("Countdown");
+
             gameOverScript.SetWinner(winnerNum);
-
-            Debug.Log("playerView: " + playerView);
-
             gameOver.transform.parent = playerView.transform;
             gameOver.transform.localPosition = new Vector3(-4f, 2f, 8f);
             gameOver.transform.rotation = playerView.transform.rotation;
@@ -198,15 +206,15 @@ public class ScoringSystem : Photon.MonoBehaviour
 
 
 
-    IEnumerator RestartAfterTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        PhotonNetwork.Disconnect ();
-        while (PhotonNetwork.connected) {
-            yield return null;
-        }
-
-        SceneManager.LoadScene("Menu");
-    }
+//    IEnumerator RestartAfterTime(float time)
+//    {
+//        yield return new WaitForSeconds(time);
+//
+//        PhotonNetwork.Disconnect ();
+//        while (PhotonNetwork.connected) {
+//            yield return null;
+//        }
+//
+//        SceneManager.LoadScene("Menu");
+//    }
 }
