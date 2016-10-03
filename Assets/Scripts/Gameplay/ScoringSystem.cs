@@ -13,7 +13,6 @@ using System.Runtime.InteropServices;
 public class ScoringSystem : Photon.MonoBehaviour 
 {
     public GameObject gameOverView;
-    public float timeLimit = 10f;
 
     private int[] scores = new int[6]; 
     private Dictionary<int, Score> scoreboardScripts = new Dictionary<int, Score>();
@@ -36,7 +35,7 @@ public class ScoringSystem : Photon.MonoBehaviour
      */ 
     void Update()
     {
-        if (Time.fixedTime > (timeLimit + startTime)) {
+        if (Time.fixedTime > (GameConfig.timeLimit + startTime)) {
             ShowGameOverOnce(highScorerData["player"]);
         }
     }
@@ -70,6 +69,9 @@ public class ScoringSystem : Photon.MonoBehaviour
 
 
 
+    /**
+     * Add score to tracked scores, determine current highest scorer, determine whether game is over.
+     */ 
     public void SetScore(int playerNumber, int score) {
         scores[playerNumber] = score;
         highScorerData["totalScored"]++;
@@ -203,18 +205,4 @@ public class ScoringSystem : Photon.MonoBehaviour
 //            StartCoroutine(restartAfterTime(GAME_CONFIG.restartDelay));
         }
     }
-
-
-
-//    IEnumerator RestartAfterTime(float time)
-//    {
-//        yield return new WaitForSeconds(time);
-//
-//        PhotonNetwork.Disconnect ();
-//        while (PhotonNetwork.connected) {
-//            yield return null;
-//        }
-//
-//        SceneManager.LoadScene("Menu");
-//    }
 }

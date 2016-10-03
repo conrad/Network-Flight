@@ -31,7 +31,7 @@ public class ObjectPlacer
 
 
     // Find an appropriate height above a dynamic terrain.
-    private float GenerateObjectHeight(
+    public float GenerateObjectHeight(
         Vector3 attemptPosition, 
         float targetHeightFromGround,
         float defaultHeight,

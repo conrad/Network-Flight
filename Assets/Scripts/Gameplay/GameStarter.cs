@@ -8,11 +8,12 @@ using UnityEngine.SceneManagement;
 public class GameStarter : MonoBehaviour 
 {
     public GameObject photonNetworkManager;
-    public GameObject spawnPoint;
     public GameObject initialCamera;
     public GameObject playerPrefab; 
     public GameObject pickUpPrefab;
     public GameObject scorePrefab;
+    public GameObject spawnPoint;
+    public Transform[] spawnPoints;
     public float pickUpPositionY = 50.0f;
     public float loadDelay = 10.0f;
     public string roomName = "";
@@ -49,11 +50,13 @@ public class GameStarter : MonoBehaviour
     void AddPlayer(bool isSoloGame = false) {
         initialCamera.SetActive(false);
 
-        Vector3 playerPosition = objectPlacer.GenerateRandomObjectPosition(
-            new Vector3(400f, 700f, 400f),
-            new Vector3(-400f, 0f, -400f),
-            5f
-        );
+//        Vector3 playerPosition = objectPlacer.GenerateRandomObjectPosition(
+//            new Vector3(400f, 700f, 400f),
+//            new Vector3(-400f, 0f, -400f),
+//            5f
+//        );
+
+        Vector3 playerPosition = FindPlayerPosition();
 
         if (!isSoloGame) {
             GameObject newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, playerPosition, Quaternion.identity, 0);
@@ -61,7 +64,6 @@ public class GameStarter : MonoBehaviour
         } else {
 //            GameObject newPlayer = Instantiate(playerPrefab);
             GameObject newPlayer = Instantiate(playerPrefab, playerPosition, Quaternion.identity) as GameObject;
-            //            newPlayer.transform.position = spawnPoint.transform.position;
             newPlayer.transform.FindChild("Suited Man").position = newPlayer.transform.position;
             newPlayer.transform.FindChild("GvrMain").position = newPlayer.transform.position;
             newPlayer.transform.FindChild("PlayerCollider").position = newPlayer.transform.position;
@@ -72,6 +74,7 @@ public class GameStarter : MonoBehaviour
       
         AddPlayerScore(GameConfig.playerNumber, GameConfig.isSoloGame);
     }
+
 
 
     // Add Player's Score to the Scene.
@@ -93,6 +96,7 @@ public class GameStarter : MonoBehaviour
             playerScore.GetComponent<Score>().playerNumber = 1;
         }
     }
+
 
 
     // Add the items to pick up to the Scene.
@@ -117,6 +121,33 @@ public class GameStarter : MonoBehaviour
                 pickUp.transform.position = pickUpPosition;
             }
         }
+    }
+
+
+
+    private Vector3 FindPlayerPosition()
+    {
+        int playerNum = GameConfig.playerNumber;
+
+        Vector3 topPlayerPos = new Vector3(
+            spawnPoint.transform.position.x,        //  spawnPoints[playerNum-1].position.x,
+            GameConfig.farTopRightCorner.y,
+            spawnPoint.transform.position.z         //  spawnPoints[playerNum-1].position.z
+        );
+
+        float playerHeight = objectPlacer.GenerateObjectHeight(
+            topPlayerPos,   //    Vector3 attemptPosition
+            50f,            //    float targetHeightFromGround,
+            GameConfig.farTopRightCorner.y / 2,     //    float defaultHeight,
+            5f,     //    float step, 
+            50      //    float attemptsLeft
+        );
+            
+        return new Vector3(
+            spawnPoint.transform.position.x,    //  spawnPoints[0].position.x, 
+            playerHeight,
+            spawnPoint.transform.position.z     //  spawnPoints[0].position.z
+        );
     }
 }
 

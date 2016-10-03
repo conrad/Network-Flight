@@ -30,6 +30,10 @@ public class GameOver : MonoBehaviour
 
         SetGameOverMesh();
         SetCountdownMesh();
+
+        PhotonNetwork.Disconnect ();
+        GameObject networkManager = GameObject.Find("PhotonNetworkManager");
+        Destroy(networkManager);
     }
 
 
@@ -75,11 +79,6 @@ public class GameOver : MonoBehaviour
 
     void ReturnToMenu()
     {
-//        PhotonNetwork.Disconnect ();
-//        while (PhotonNetwork.connected) {
-//            yield return null;         // Will this work? ...Freezes it.
-//        }
-
         SceneManager.LoadScene("Menu");
     }
 }

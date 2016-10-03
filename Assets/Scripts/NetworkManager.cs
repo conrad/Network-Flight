@@ -31,7 +31,6 @@ public class NetworkManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Menu") {
             menuObjectHandler = ObjectHandler.GetComponent<MenuObjectHandler>();
-            // TODO: Determine whether or not to call the following in Desert.
             PhotonNetwork.ConnectUsingSettings(GameConfig.VERSION);
         }
     }
@@ -71,7 +70,7 @@ public class NetworkManager : MonoBehaviour
 
         menuObjectHandler.TransitionPreJoinRoom();
 
-        RoomOptions roomOptions = new RoomOptions() { IsVisible = false, MaxPlayers = 4 };
+        RoomOptions roomOptions = new RoomOptions() { IsVisible = false, MaxPlayers = 2 };
         PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
     }
 

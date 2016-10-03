@@ -5,8 +5,6 @@ using System.Collections;
 public class PlayerController : Photon.MonoBehaviour 
 {
     public GameObject leftEye;
-    public float forwardSpeed;    
-    public float rotationSpeed = 300f; 
     public GameObject avatar;
     public int playerNumber;
     public Transform playerLocal;
@@ -18,6 +16,8 @@ public class PlayerController : Photon.MonoBehaviour
     private int score = 0;
     private ScoringSystem scoringScript;
     private Score scoresScript;       // http://answers.unity3d.com/questions/7555/how-do-i-call-a-function-in-another-gameobjects-sc.html
+    private float forwardSpeed;    
+    private float rotationSpeed;
 
 //    bool isAlive = true;
 //    float lerpSmoothing = 5f;
@@ -28,11 +28,13 @@ public class PlayerController : Photon.MonoBehaviour
 
 	void Start () {
         GameConfig = GameConfig.Instance();
-
+        rotationSpeed = GameConfig.playerRotationSpeed;
+        forwardSpeed = GameConfig.playerForwardSpeed;
+            
         if (photonView.isMine || GameConfig.isSoloGame)  {
             startPhotonIsMineCalled = true;
             rb = GetComponent<Rigidbody>();
-            forwardSpeed = GameConfig.playerSpeed;
+            forwardSpeed = GameConfig.playerForwardSpeed;
             playerLocal = this.transform.Find("GvrMain/Head/Main Camera/Main Camera Left");
 //            this.transform.SetParent(playerLocal);
 
@@ -74,7 +76,7 @@ public class PlayerController : Photon.MonoBehaviour
             }
 
             if (isMoving) {
-                forwardSpeed = GameConfig.playerSpeed;
+                forwardSpeed = GameConfig.playerForwardSpeed;
             } else {
                 forwardSpeed = 0;
             }

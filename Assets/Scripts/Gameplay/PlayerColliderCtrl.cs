@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerColliderCtrl : MonoBehaviour {
 
-    public int totalPickUps = 10;
+    public int totalPickUps = 11;
     private int count = 0;
 
     void OnCollisionEnter(Collision collision) {

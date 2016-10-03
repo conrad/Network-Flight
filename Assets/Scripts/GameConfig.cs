@@ -8,10 +8,12 @@ public class GameConfig
     public static GameConfig _instance = null;
     public string defaultRoomName = "BuddyRace";
     public int numPlayersForGame = 1;
-    public float playerSpeed = 30f;
+    public float playerForwardSpeed = 80f;
+    public float playerRotationSpeed = 300f;
     public int totalPickUps = 11;
+    public float timeLimit = 90f;
     public float restartDelay = 10.0f;
-    public string VERSION = "v0.0.1";
+    public string VERSION = "v0.1.0";
     public int playerNumber;
     public bool isSoloGame = true;      // TODO: Change this value to false for multiplayer.
     public Vector3 farTopRightCorner = new Vector3(400f, 700f, 400f);
