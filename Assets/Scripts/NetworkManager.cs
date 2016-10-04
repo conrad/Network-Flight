@@ -23,6 +23,8 @@ public class NetworkManager : MonoBehaviour
 
         GameConfig = GameConfig.Instance();     // Use the instance method to ensure singleton.
         roomName = GameConfig.defaultRoomName;
+
+        PhotonNetwork.automaticallySyncScene = true; 
     }
 
 
@@ -99,8 +101,10 @@ public class NetworkManager : MonoBehaviour
     {
         if (PhotonNetwork.playerList.Length >= GameConfig.numPlayersForGame) {
 //            SceneManager.LoadScene("Desert");
-            PhotonNetwork.automaticallySyncScene = true; 
+            Debug.Log("BEGIN");
             PhotonNetwork.LoadLevel("Desert");
+//            PhotonView.RPC("StartNewLevel", PhotonTargets.All,"blahblahblahPlaygroundScene");
+
         } else {
             Debug.Log("You need more players to play...");
         }

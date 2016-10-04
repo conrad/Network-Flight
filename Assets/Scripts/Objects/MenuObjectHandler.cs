@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class MenuObjectHandler : MonoBehaviour 
 {
-    public GameObject planet;
+    public GameObject pickUp;
     public GameObject roomInput;
     public GameObject joinButton;
     public GameObject avatar;
@@ -36,8 +36,8 @@ public class MenuObjectHandler : MonoBehaviour
 
     public void TransitionOnJoinedRoom(int playerNum)
     {
-        // Remove room inputField, planet & button
-        planet.SetActive(false);
+        // Remove room inputField, pickUp & button
+        pickUp.SetActive(false);
 
         // Add prefab of avatar and activate Start button and ready text.
         Instantiate(avatar, new Vector3(-21.5f, 50f, 10.1f), Quaternion.identity);
