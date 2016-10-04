@@ -12,6 +12,7 @@ public class MenuObjectHandler : MonoBehaviour
     public Text playerNumberView;
     public Text totalPlayersView;
     public Text waitingMessageView;
+    public Text instructions;
 
     int playerNumber;
     int totalPlayers;
@@ -30,6 +31,7 @@ public class MenuObjectHandler : MonoBehaviour
     {
         roomInput.SetActive(false);
         joinButton.SetActive(false);
+        instructions.GetComponent<Text>().enabled = false;
     }
 
 

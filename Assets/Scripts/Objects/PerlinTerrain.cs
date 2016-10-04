@@ -42,7 +42,6 @@ public class PerlinTerrain : MonoBehaviour {
         terrainTextures[3] = rockTexture;
         //Paints the textures.
         kit.TextureTerrain(slopeStops, heightStops, terrainTextures);
-        Debug.Log("DONE GENERATING TERRAIN");
     }
 
 
