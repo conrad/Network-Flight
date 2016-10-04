@@ -8,7 +8,7 @@ public class GameConfig
     public static GameConfig _instance = null;
     public string defaultRoomName = "BuddyRace";
     public int numPlayersForGame = 1;
-    public float playerForwardSpeed = 80f;
+    public float playerForwardSpeed = 40f;
     public float playerRotationSpeed = 300f;
     public int totalPickUps = 11;
     public float timeLimit = 90f;
