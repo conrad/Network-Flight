@@ -101,13 +101,20 @@ public class NetworkManager : MonoBehaviour
     {
         if (PhotonNetwork.playerList.Length >= GameConfig.numPlayersForGame) {
 //            SceneManager.LoadScene("Desert");
-            Debug.Log("BEGIN");
             PhotonNetwork.LoadLevel("Desert");
 //            PhotonView.RPC("StartNewLevel", PhotonTargets.All,"blahblahblahPlaygroundScene");
 
         } else {
             Debug.Log("You need more players to play...");
         }
+    }
+
+
+
+    public void Back()
+    {
+        menuObjectHandler.TransionOnLeaveRoom();
+        PhotonNetwork.LeaveRoom();
     }
 
 

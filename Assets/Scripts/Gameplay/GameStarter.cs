@@ -100,7 +100,8 @@ public class GameStarter : MonoBehaviour
 
 
     // Add the items to pick up to the Scene.
-    void AddPickUps(bool isSoloGame = false) {
+    void AddPickUps(bool isSoloGame = false) 
+    {
         Debug.Log("Adding " + GameConfig.totalPickUps + " pick ups to scene");
         for (var i = 0; i < GameConfig.totalPickUps; i++) {
             Vector3 pickUpPosition = objectPlacer.GenerateRandomObjectPosition(

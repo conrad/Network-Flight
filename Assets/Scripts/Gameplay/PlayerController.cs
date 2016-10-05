@@ -18,6 +18,8 @@ public class PlayerController : Photon.MonoBehaviour
     private Score scoresScript;       // http://answers.unity3d.com/questions/7555/how-do-i-call-a-function-in-another-gameobjects-sc.html
     private float forwardSpeed;    
     private float rotationSpeed;
+    AudioSource audio;
+
 
 //    bool isAlive = true;
 //    float lerpSmoothing = 5f;
@@ -30,6 +32,7 @@ public class PlayerController : Photon.MonoBehaviour
         GameConfig = GameConfig.Instance();
         rotationSpeed = GameConfig.playerRotationSpeed;
         forwardSpeed = GameConfig.playerForwardSpeed;
+        audio = GetComponent<AudioSource>();
             
         if (photonView.isMine || GameConfig.isSoloGame)  {
             startPhotonIsMineCalled = true;
@@ -159,6 +162,7 @@ public class PlayerController : Photon.MonoBehaviour
         {
             Debug.Log("OnTriggerEnter collision detected with " + other);
             // TODO: Play a sound here from the location of the pickUp
+            audio.Play();
             other.gameObject.SetActive (false);
             score += 1;
             scoringScript.SetScore(playerNumber, score);

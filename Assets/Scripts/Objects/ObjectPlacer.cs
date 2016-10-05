@@ -13,7 +13,7 @@ public class ObjectPlacer
         float positionX = Random.Range(farTopRightCorner.x - objectRadius, nearBottomLeftCorner.x + objectRadius);
         float positionZ = Random.Range(farTopRightCorner.z - objectRadius, nearBottomLeftCorner.z + objectRadius);
         float targetHeightFromGround = Random.Range(
-            farTopRightCorner.y / 2, 
+            farTopRightCorner.y / 4, 
             nearBottomLeftCorner.y + objectRadius
         );
 
