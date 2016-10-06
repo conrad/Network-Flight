@@ -83,7 +83,7 @@ public class ScoringSystem : Photon.MonoBehaviour
         }
 
         if (IsGameOver(highScorerData["totalScored"])) {
-            ShowGameOver(highScorerData["player"]);
+            ShowGameOverOnce(highScorerData["player"]);
         }
     }
 

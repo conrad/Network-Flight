@@ -6,6 +6,7 @@ public class PlayerController : Photon.MonoBehaviour
 {
     public GameObject leftEye;
     public GameObject avatar;
+    public GameObject outOfBoundsView;
     public int playerNumber;
     public Transform playerLocal;
 
@@ -33,13 +34,13 @@ public class PlayerController : Photon.MonoBehaviour
         rotationSpeed = GameConfig.playerRotationSpeed;
         forwardSpeed = GameConfig.playerForwardSpeed;
         audio = GetComponent<AudioSource>();
-            
+           
+
         if (photonView.isMine || GameConfig.isSoloGame)  {
             startPhotonIsMineCalled = true;
             rb = GetComponent<Rigidbody>();
             forwardSpeed = GameConfig.playerForwardSpeed;
             playerLocal = this.transform.Find("GvrMain/Head/Main Camera/Main Camera Left");
-//            this.transform.SetParent(playerLocal);
 
             if (GameConfig.isSoloGame) {
                 avatar.SetActive(false);    // TODO: Fix avatar positioning not to be in way in solo game.
@@ -161,14 +162,29 @@ public class PlayerController : Photon.MonoBehaviour
         if (other.gameObject.CompareTag("Pick Up")) 
         {
             Debug.Log("OnTriggerEnter collision detected with " + other);
-            // TODO: Play a sound here from the location of the pickUp
             audio.Play();
-            other.gameObject.SetActive (false);
+            other.gameObject.SetActive(false);
             score += 1;
             scoringScript.SetScore(playerNumber, score);
         }
+
+        if (other.gameObject.CompareTag("Wall")) {
+            Debug.Log("OnTriggerEnter collision detected with " + other);
+            outOfBoundsView.SetActive(true);
+        } else {
+        }
+
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Wall")) {
+            outOfBoundsView.SetActive(false);
+        }
     }
 }
+
+
 
 
 
