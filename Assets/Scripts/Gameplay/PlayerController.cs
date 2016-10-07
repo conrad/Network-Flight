@@ -75,9 +75,9 @@ public class PlayerController : Photon.MonoBehaviour
     void Update () 
     {   
         if (photonView.isMine || GameConfig.isSoloGame) {
-            if (GvrViewer.Instance.Triggered) { 
-                isMoving = !isMoving;
-            }
+//            if (GvrViewer.Instance.Triggered) { 
+//                isMoving = !isMoving;
+//            }
 
             if (isMoving) {
                 forwardSpeed = GameConfig.playerForwardSpeed;
@@ -175,6 +175,8 @@ public class PlayerController : Photon.MonoBehaviour
         }
 
     }
+
+
 
     void OnTriggerExit(Collider other)
     {
