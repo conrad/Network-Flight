@@ -105,10 +105,10 @@ public class NetworkManager : Photon.MonoBehaviour
     public void StartGame() 
     {
         if (PhotonNetwork.playerList.Length >= GameConfig.numPlayersForGame) {
-//            EnterDesert();
-            this.gameObject.AddComponent<PhotonView>();
-            PhotonView photonView = PhotonView.Get(this);
-            photonView.RPC("EnterDesert", PhotonTargets.All);
+            EnterDesert();
+//            this.gameObject.AddComponent<PhotonView>();
+//            PhotonView photonView = PhotonView.Get(this);
+//            photonView.RPC("EnterDesert", PhotonTargets.All);
         }
     }
 

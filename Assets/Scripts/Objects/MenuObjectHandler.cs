@@ -44,12 +44,12 @@ public class MenuObjectHandler : MonoBehaviour
         // Add prefab of avatar and activate Start button and ready text.
         avatarObject = Instantiate(avatar, new Vector3(-21.5f, 50f, 10.1f), Quaternion.identity) as GameObject;
 
-        if (PhotonNetwork.isMasterClient) {
+//        if (PhotonNetwork.isMasterClient) {
             startButton.SetActive(true);        // had difficulty instantiating UI object
             backButton.SetActive(true); 
-        } else {
-            waitingMessageView.GetComponent<Text>().enabled = true;
-        }
+//        } else {
+//            waitingMessageView.GetComponent<Text>().enabled = true;
+//        }
 
         playerNumber = playerNum;
         totalPlayers = playerNum;
