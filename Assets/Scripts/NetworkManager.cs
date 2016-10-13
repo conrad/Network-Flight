@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 
 
-public class NetworkManager : MonoBehaviour 
+public class NetworkManager : Photon.MonoBehaviour 
 {
     public GameObject ObjectHandler;
     public InputField roomInput;
@@ -23,8 +23,6 @@ public class NetworkManager : MonoBehaviour
 
         GameConfig = GameConfig.Instance();     // Use the instance method to ensure singleton.
         roomName = GameConfig.defaultRoomName;
-
-        PhotonNetwork.automaticallySyncScene = true; 
     }
 
 
@@ -96,16 +94,21 @@ public class NetworkManager : MonoBehaviour
     }
 
 
+    [PunRPC]
+    void EnterDesert()
+    {
+        PhotonNetwork.LoadLevel("Desert");
+    }
+
+
 
     public void StartGame() 
     {
         if (PhotonNetwork.playerList.Length >= GameConfig.numPlayersForGame) {
-//            SceneManager.LoadScene("Desert");
-            PhotonNetwork.LoadLevel("Desert");
-//            PhotonView.RPC("StartNewLevel", PhotonTargets.All,"blahblahblahPlaygroundScene");
-
-        } else {
-            Debug.Log("You need more players to play...");
+//            EnterDesert();
+            this.gameObject.AddComponent<PhotonView>();
+            PhotonView photonView = PhotonView.Get(this);
+            photonView.RPC("EnterDesert", PhotonTargets.All);
         }
     }
 

@@ -20,8 +20,6 @@ public class PlayerController : Photon.MonoBehaviour
     private float forwardSpeed;    
     private float rotationSpeed;
     AudioSource audio;
-
-
 //    bool isAlive = true;
 //    float lerpSmoothing = 5f;
 
@@ -42,9 +40,7 @@ public class PlayerController : Photon.MonoBehaviour
             forwardSpeed = GameConfig.playerForwardSpeed;
             playerLocal = this.transform.Find("GvrMain/Head/Main Camera/Main Camera Left");
 
-            if (GameConfig.isSoloGame) {
-                avatar.SetActive(false);    // TODO: Fix avatar positioning not to be in way in solo game.
-            }
+            avatar.SetActive(false);
 
             GvrViewer viewer = GetComponentInChildren<GvrViewer>();
             viewer.enabled = true;
@@ -119,6 +115,7 @@ public class PlayerController : Photon.MonoBehaviour
     void RotateAvatar()
     {
         avatar.transform.rotation = leftEye.transform.rotation;
+//        avatar.transform.rotation.x = leftEye.transform.rotation.x + 90;
     }
 
 
@@ -134,13 +131,10 @@ public class PlayerController : Photon.MonoBehaviour
         }
         if (stream.isWriting)
         {
-//            if (photonView.isMine) {
-//                stream.SendNext(this.transform.position);
-//                stream.SendNext(this.transform.rotation);
-                stream.SendNext(playerLocal.localPosition);
-                stream.SendNext(playerLocal.localRotation);
-    //            stream.SendNext(score);
-//            }
+//            stream.SendNext(this.transform.position);
+//            stream.SendNext(this.transform.rotation);
+            stream.SendNext(playerLocal.localPosition);
+            stream.SendNext(playerLocal.localRotation);
         }
         else
         {
@@ -149,9 +143,6 @@ public class PlayerController : Photon.MonoBehaviour
 //            networkPlayerRotation = (Quaternion)stream.ReceiveNext();
             avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
             avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
-//            this.transform.position = (Vector3)stream.ReceiveNext();
-//            this.transform.rotation = (Quaternion)stream.ReceiveNext();
-//            score = (int)stream.ReceiveNext();
         }
     }
 

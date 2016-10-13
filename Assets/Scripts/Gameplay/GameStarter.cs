@@ -25,6 +25,9 @@ public class GameStarter : MonoBehaviour
 
     GameConfig GameConfig;
     ObjectPlacer objectPlacer;
+    string avatarName = "Sports car 1";
+
+
 
     void Start()
     {
@@ -50,29 +53,42 @@ public class GameStarter : MonoBehaviour
     void AddPlayer(bool isSoloGame = false) {
         initialCamera.SetActive(false);
 
-//        Vector3 playerPosition = objectPlacer.GenerateRandomObjectPosition(
-//            new Vector3(400f, 700f, 400f),
-//            new Vector3(-400f, 0f, -400f),
-//            5f
-//        );
-
         Vector3 playerPosition = FindPlayerPosition();
 
         if (!isSoloGame) {
             GameObject newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, playerPosition, Quaternion.identity, 0);
             newPlayer.GetComponent<PlayerController>().playerNumber = GameConfig.playerNumber;
+            Renderer renderer = newPlayer.transform.FindChild("Sports car 1/body").GetComponent<Renderer>();
+
+//            SetRendererColor(renderer, GameConfig.playerNumber);
+
         } else {
-//            GameObject newPlayer = Instantiate(playerPrefab);
             GameObject newPlayer = Instantiate(playerPrefab, playerPosition, Quaternion.identity) as GameObject;
-            newPlayer.transform.FindChild("Suited Man").position = newPlayer.transform.position;
+            newPlayer.transform.FindChild(avatarName).position = newPlayer.transform.position;
             newPlayer.transform.FindChild("GvrMain").position = newPlayer.transform.position;
             newPlayer.transform.FindChild("PlayerCollider").position = newPlayer.transform.position;
-
-
             newPlayer.GetComponent<PlayerController>().playerNumber = 1;
         }
       
         AddPlayerScore(GameConfig.playerNumber, GameConfig.isSoloGame);
+    }
+
+
+
+    void SetRendererColor(Renderer rend, int variation)
+    {
+        switch (variation) 
+        {
+            case 1:
+                rend.material.SetColor("_Color", Color.blue);
+                break;
+            case 2: 
+                rend.material.SetColor("_Color", Color.red);
+                break;
+            default:
+                rend.material.SetColor("_Color", Color.blue);
+                break;
+        }
     }
 
 
@@ -132,7 +148,7 @@ public class GameStarter : MonoBehaviour
 
         Vector3 topPlayerPos = new Vector3(
             spawnPoint.transform.position.x,        //  spawnPoints[playerNum-1].position.x,
-            GameConfig.farTopRightCorner.y,
+            GameConfig.farTopRightCorner.y - 10f,
             spawnPoint.transform.position.z         //  spawnPoints[playerNum-1].position.z
         );
 
