@@ -42,6 +42,9 @@ public class PlayerController : Photon.MonoBehaviour
 
             avatar.SetActive(false);
 
+            AudioListener listener = GetComponent<AudioListener>();
+            listener.enabled = true;
+
             GvrViewer viewer = GetComponentInChildren<GvrViewer>();
             viewer.enabled = true;
 
@@ -49,9 +52,9 @@ public class PlayerController : Photon.MonoBehaviour
             foreach (GvrEye eye in eyes)
                 eye.enabled = true;
 
-            GvrAudioListener listener = GetComponentInChildren<GvrAudioListener>();
-            if (listener) {
-                listener.enabled = true;
+            GvrAudioListener gvrListener = GetComponentInChildren<GvrAudioListener>();
+            if (gvrListener) {
+                gvrListener.enabled = true;
             }
 
             Camera[] cameras = GetComponentsInChildren<Camera>(true);
@@ -62,7 +65,7 @@ public class PlayerController : Photon.MonoBehaviour
             scoringScript = scoring.GetComponent<ScoringSystem>();
             scoringScript.AddPlayer(playerNumber);
 //        } else {
-//            StartCoroutine("Alive");      // For lerping
+//            StartCoroutine("Alive");      // To reinstate lerping when ready.
         }
     }
 
@@ -72,7 +75,7 @@ public class PlayerController : Photon.MonoBehaviour
     {   
         if (photonView.isMine || GameConfig.isSoloGame) {
 //            if (GvrViewer.Instance.Triggered) { 
-//                isMoving = !isMoving;
+//                TODO: SHOW MENU
 //            }
 
             if (isMoving) {
@@ -115,7 +118,6 @@ public class PlayerController : Photon.MonoBehaviour
     void RotateAvatar()
     {
         avatar.transform.rotation = leftEye.transform.rotation;
-//        avatar.transform.rotation.x = leftEye.transform.rotation.x + 90;
     }
 
 
@@ -152,7 +154,6 @@ public class PlayerController : Photon.MonoBehaviour
     {
         if (other.gameObject.CompareTag("Pick Up")) 
         {
-            Debug.Log("OnTriggerEnter collision detected with " + other);
             audio.Play();
             other.gameObject.SetActive(false);
             score += 1;
@@ -160,7 +161,6 @@ public class PlayerController : Photon.MonoBehaviour
         }
 
         if (other.gameObject.CompareTag("Wall")) {
-            Debug.Log("OnTriggerEnter collision detected with " + other);
             outOfBoundsView.SetActive(true);
         } else {
         }

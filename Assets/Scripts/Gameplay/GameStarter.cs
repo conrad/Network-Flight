@@ -58,8 +58,7 @@ public class GameStarter : MonoBehaviour
         if (!isSoloGame) {
             GameObject newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, playerPosition, Quaternion.identity, 0);
             newPlayer.GetComponent<PlayerController>().playerNumber = GameConfig.playerNumber;
-            Renderer renderer = newPlayer.transform.FindChild("Sports car 1/body").GetComponent<Renderer>();
-
+//            Renderer renderer = newPlayer.transform.FindChild("Sports car 1/body").GetComponent<Renderer>();
 //            SetRendererColor(renderer, GameConfig.playerNumber);
 
         } else {
@@ -99,7 +98,7 @@ public class GameStarter : MonoBehaviour
         if (!isSoloGame) {
             GameObject playerScore = PhotonNetwork.Instantiate(
                                          scorePrefab.name, 
-                                         new Vector3(0f, 700f + (playerNumber * 40), 0f),
+                                         new Vector3(0f, 600f + (playerNumber * 80), 0f),
                                          Quaternion.identity,
                                          0
                                      );

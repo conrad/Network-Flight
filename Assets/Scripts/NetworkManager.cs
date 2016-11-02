@@ -94,6 +94,7 @@ public class NetworkManager : Photon.MonoBehaviour
     }
 
 
+
     [PunRPC]
     void EnterDesert()
     {
@@ -125,5 +126,12 @@ public class NetworkManager : Photon.MonoBehaviour
     public int GetNumberOfPlayers() 
     {
         return PhotonNetwork.playerList.Length;
+    }
+
+
+
+    public void GoToInstructions()
+    {
+        SceneManager.LoadScene("Instructions");
     }
 }
