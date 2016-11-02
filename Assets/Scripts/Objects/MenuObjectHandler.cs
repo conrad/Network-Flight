@@ -43,6 +43,7 @@ public class MenuObjectHandler : MonoBehaviour
 
         // Add prefab of avatar and activate Start button and ready text.
         avatarObject = Instantiate(avatar, new Vector3(-21.5f, 50f, 10.1f), Quaternion.identity) as GameObject;
+        avatarObject.transform.localScale = new Vector3(5f, 5f, 5f);
 
 //        if (PhotonNetwork.isMasterClient) {
             startButton.SetActive(true);        // had difficulty instantiating UI object
