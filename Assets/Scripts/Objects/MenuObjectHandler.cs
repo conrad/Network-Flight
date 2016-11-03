@@ -7,6 +7,7 @@ public class MenuObjectHandler : MonoBehaviour
     public GameObject pickUp;
     public GameObject roomInput;
     public GameObject joinButton;
+    public GameObject instructionsButton;
     public GameObject avatar;
     public GameObject startButton;
     public GameObject backButton;
@@ -23,6 +24,7 @@ public class MenuObjectHandler : MonoBehaviour
     {
         roomInput.SetActive(true);
         joinButton.SetActive(true);
+        instructionsButton.SetActive(true);
     }
 
 
@@ -43,19 +45,19 @@ public class MenuObjectHandler : MonoBehaviour
 
         // Add prefab of avatar and activate Start button and ready text.
         avatarObject = Instantiate(avatar, new Vector3(-21.5f, 50f, 10.1f), Quaternion.identity) as GameObject;
-        avatarObject.transform.localScale = new Vector3(5f, 5f, 5f);
+        avatarObject.transform.localScale = new Vector3(3f, 3f, 3f);
 
-//        if (PhotonNetwork.isMasterClient) {
-            startButton.SetActive(true);        // had difficulty instantiating UI object
-            backButton.SetActive(true); 
-//        } else {
-//            waitingMessageView.GetComponent<Text>().enabled = true;
-//        }
+        startButton.SetActive(true); 
+        backButton.SetActive(true); 
 
         playerNumber = playerNum;
         totalPlayers = playerNum;
         playerNumberView.text = "READY PLAYER " + playerNumber;
-        totalPlayersView.text = totalPlayers + " PLAYERS TOTAL";
+        if (totalPlayers > 1) {
+            totalPlayersView.text = totalPlayers + " PLAYERS TOTAL";
+        } else {
+            totalPlayersView.text = "1 PLAYER PRESENT";
+        }
         playerNumberView.GetComponent<Text>().enabled = true;
         totalPlayersView.GetComponent<Text>().enabled = true;
     }
