@@ -26,8 +26,11 @@ public class PlayerController : Photon.MonoBehaviour
     bool startPhotonIsMineCalled = false;
     bool calledLogged = false;
 
+    ModalController modalController;
 
-	void Start () {
+
+	void Start () {  
+        modalController = new ModalController();
         GameConfig = GameConfig.Instance();
         rotationSpeed = GameConfig.playerRotationSpeed;
         forwardSpeed = GameConfig.playerForwardSpeed;
@@ -74,9 +77,10 @@ public class PlayerController : Photon.MonoBehaviour
     void Update () 
     {   
         if (photonView.isMine || GameConfig.isSoloGame) {
-//            if (GvrViewer.Instance.Triggered) { 
-//                TODO: SHOW MENU
-//            }
+            if (Input.touchCount > 1 && isMoving) {
+                isMoving = false;
+                modalController.RevealMenuModal();
+            }
 
             if (isMoving) {
                 forwardSpeed = GameConfig.playerForwardSpeed;
@@ -131,6 +135,7 @@ public class PlayerController : Photon.MonoBehaviour
         if (!startPhotonIsMineCalled && !calledLogged) {
             Debug.Log("OnPhotonSerializedView when Start NOT CALLED!!!!!");
         }
+
         if (stream.isWriting)
         {
 //            stream.SendNext(this.transform.position);
