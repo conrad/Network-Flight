@@ -8,12 +8,12 @@ public class PlayerController : Photon.MonoBehaviour
     public GameObject avatar;
     public GameObject outOfBoundsView;
     public int playerNumber;
-    public Transform playerLocal;
 
     GameConfig GameConfig;
     Rigidbody rb;
     private bool isMoving = true;
     private Vector3 axis;    
+    private Transform playerLocal;
     private int score = 0;
     private ScoringSystem scoringScript;
     private Score scoresScript;       // http://answers.unity3d.com/questions/7555/how-do-i-call-a-function-in-another-gameobjects-sc.html
@@ -26,11 +26,9 @@ public class PlayerController : Photon.MonoBehaviour
     bool startPhotonIsMineCalled = false;
     bool calledLogged = false;
 
-    ModalController modalController;
 
 
 	void Start () {  
-        modalController = new ModalController();
         GameConfig = GameConfig.Instance();
         rotationSpeed = GameConfig.playerRotationSpeed;
         forwardSpeed = GameConfig.playerForwardSpeed;
@@ -79,7 +77,8 @@ public class PlayerController : Photon.MonoBehaviour
         if (photonView.isMine || GameConfig.isSoloGame) {
             if (Input.touchCount > 1 && isMoving) {
                 isMoving = false;
-                modalController.RevealMenuModal();
+                GameObject modal = GameObject.Find("Canvas/MenuModal");
+                modal.SetActive(true);
             }
 
             if (isMoving) {
@@ -133,7 +132,7 @@ public class PlayerController : Photon.MonoBehaviour
          * that for reading to keep things straight.
          */
         if (!startPhotonIsMineCalled && !calledLogged) {
-            Debug.Log("OnPhotonSerializedView when Start NOT CALLED!!!!!");
+            Debug.Log("OnPhotonSerializedView when Start NOT CALLED!");
         }
 
         if (stream.isWriting)
@@ -169,7 +168,6 @@ public class PlayerController : Photon.MonoBehaviour
             outOfBoundsView.SetActive(true);
         } else {
         }
-
     }
 
 
@@ -181,6 +179,9 @@ public class PlayerController : Photon.MonoBehaviour
         }
     }
 }
+
+
+
 
 
 
