@@ -53,13 +53,20 @@ public class MenuObjectHandler : MonoBehaviour
         playerNumber = playerNum;
         totalPlayers = playerNum;
         playerNumberView.text = "READY PLAYER " + playerNumber;
+        SetTotalPlayersView(totalPlayers);
+        playerNumberView.GetComponent<Text>().enabled = true;
+        totalPlayersView.GetComponent<Text>().enabled = true;
+    }
+
+
+
+    private void SetTotalPlayersView(int totalNumberOfPlayers)
+    {
         if (totalPlayers > 1) {
             totalPlayersView.text = totalPlayers + " PLAYERS TOTAL";
         } else {
             totalPlayersView.text = "1 PLAYER PRESENT";
         }
-        playerNumberView.GetComponent<Text>().enabled = true;
-        totalPlayersView.GetComponent<Text>().enabled = true;
     }
 
 
@@ -67,17 +74,17 @@ public class MenuObjectHandler : MonoBehaviour
     public void UpdatePlayerNumber(int numberOfPlayers)
     {
         totalPlayers = numberOfPlayers;
-        totalPlayersView.text = totalPlayers + " players total";
+        SetTotalPlayersView(totalPlayers);
     }
 
 
 
     public void TransionOnLeaveRoom()
     {
-        // Remove Joined Objects
+        // Remove OnJoinedRoom Objects
         startButton.SetActive(false); 
         backButton.SetActive(false); 
-        avatarObject.SetActive(false);
+        Destroy(avatarObject);
         playerNumberView.GetComponent<Text>().enabled = false;
         totalPlayersView.GetComponent<Text>().enabled = false;
 

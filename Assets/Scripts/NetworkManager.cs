@@ -37,19 +37,6 @@ public class NetworkManager : Photon.MonoBehaviour
 
 
 
-    void Update()
-    {
-        if (SceneManager.GetActiveScene().name == "Menu") {
-            if (PhotonNetwork.playerList.Length > numberOfPlayers) {
-                Debug.Log("players on network: " + PhotonNetwork.playerList.Length);
-                numberOfPlayers = PhotonNetwork.playerList.Length;
-                menuObjectHandler.UpdatePlayerNumber(numberOfPlayers);
-            }
-        }
-    }
-
-
-
     void OnJoinedLobby() {
         Debug.Log("Joined Lobby");
         if (SceneManager.GetActiveScene().name == "Menu") {
@@ -84,13 +71,31 @@ public class NetworkManager : Photon.MonoBehaviour
             GameConfig.setPlayerNumber(playerNumber);
             menuObjectHandler.TransitionOnJoinedRoom(playerNumber);
         }
+    }
 
-        if (SceneManager.GetActiveScene().name == "Desert") {
-            // TODO: Prepare the scene if join when already in the desert...
-            Debug.Log("Joined Room while in Desert scene");
 
-            // call methods to addPlayer & addPickups...
+
+    void OnPhotonPlayerDisconnected()
+    {
+        if (SceneManager.GetActiveScene().name == "Menu") {
+            menuObjectHandler.TransionOnLeaveRoom();
+            PhotonNetwork.LeaveRoom();
         }
+    }
+
+
+
+    void OnPhotonPlayerConnected()
+    {
+        if (SceneManager.GetActiveScene().name == "Menu") {
+            int tempPlayerNum = PhotonNetwork.playerList.Length;
+            if (tempPlayerNum != numberOfPlayers) {
+                Debug.Log("OnPhotonPlayerConnected called");
+                numberOfPlayers = tempPlayerNum;
+                menuObjectHandler.UpdatePlayerNumber(numberOfPlayers);
+            }
+        }
+
     }
 
 
