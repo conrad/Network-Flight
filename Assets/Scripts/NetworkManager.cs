@@ -21,7 +21,7 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         DontDestroyOnLoad(transform.gameObject);
 
-        GameConfig = GameConfig.Instance();     // Use the instance method to ensure singleton.
+        GameConfig = GameConfig.Instance();     // Use the instance method to ensure GameConfig singleton.
         roomName = GameConfig.defaultRoomName;
     }
 
@@ -40,7 +40,7 @@ public class NetworkManager : Photon.MonoBehaviour
     void OnJoinedLobby() {
         Debug.Log("Joined Lobby");
         if (SceneManager.GetActiveScene().name == "Menu") {
-            menuObjectHandler.TransitionOnJoinedLobby();
+            menuObjectHandler.MakeTransitionOnJoinedLobby();
         }
     }
 
@@ -55,10 +55,14 @@ public class NetworkManager : Photon.MonoBehaviour
             }
         }
 
-        menuObjectHandler.TransitionPreJoinRoom();
+        menuObjectHandler.MakeTransitionPreJoinRoom();
 
         RoomOptions roomOptions = new RoomOptions() { IsVisible = false, MaxPlayers = 2 };
-        PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
+        bool hasJoined = PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
+
+        if (!hasJoined) {
+            menuObjectHandler.MakeTransitionBackToLobby();
+        }
     }
 
 
@@ -69,7 +73,7 @@ public class NetworkManager : Photon.MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "Menu") {
             GameConfig.setPlayerNumber(playerNumber);
-            menuObjectHandler.TransitionOnJoinedRoom(playerNumber);
+            menuObjectHandler.MakeTransitionOnJoinedRoom(playerNumber);
         }
     }
 
@@ -78,7 +82,7 @@ public class NetworkManager : Photon.MonoBehaviour
     void OnPhotonPlayerDisconnected()
     {
         if (SceneManager.GetActiveScene().name == "Menu") {
-            menuObjectHandler.TransionOnLeaveRoom();
+            menuObjectHandler.MakeTransionOnLeaveRoom();
             PhotonNetwork.LeaveRoom();
         }
     }
@@ -100,9 +104,9 @@ public class NetworkManager : Photon.MonoBehaviour
 
 
 
-    [PunRPC]
     void EnterDesert()
     {
+        PhotonNetwork.room.open = false;
         PhotonNetwork.LoadLevel("Desert");
     }
 
@@ -112,9 +116,6 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         if (PhotonNetwork.playerList.Length >= GameConfig.numPlayersForGame) {
             EnterDesert();
-//            this.gameObject.AddComponent<PhotonView>();
-//            PhotonView photonView = PhotonView.Get(this);
-//            photonView.RPC("EnterDesert", PhotonTargets.All);
         }
     }
 
@@ -122,7 +123,7 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public void Back()
     {
-        menuObjectHandler.TransionOnLeaveRoom();
+        menuObjectHandler.MakeTransionOnLeaveRoom();
         PhotonNetwork.LeaveRoom();
     }
 

@@ -20,7 +20,9 @@ public class MenuObjectHandler : MonoBehaviour
     int totalPlayers;
     GameObject avatarObject;
 
-    public void TransitionOnJoinedLobby()
+
+
+    public void MakeTransitionOnJoinedLobby()
     {
         roomInput.SetActive(true);
         joinButton.SetActive(true);
@@ -29,7 +31,7 @@ public class MenuObjectHandler : MonoBehaviour
 
 
 
-    public void TransitionPreJoinRoom()
+    public void MakeTransitionPreJoinRoom()
     {
         roomInput.SetActive(false);
         joinButton.SetActive(false);
@@ -37,8 +39,17 @@ public class MenuObjectHandler : MonoBehaviour
     }
 
 
+    public void MakeTransitionBackToLobby()
+    {
+        roomInput.SetActive(true);
+        joinButton.SetActive(true);
+        instructionsButton.SetActive(true);
+        instructions.GetComponent<Text>().enabled = true;
+    }
 
-    public void TransitionOnJoinedRoom(int playerNum)
+
+
+    public void MakeTransitionOnJoinedRoom(int playerNum)
     {
         // Remove room inputField, pickUp & button
         pickUp.SetActive(false);
@@ -79,7 +90,7 @@ public class MenuObjectHandler : MonoBehaviour
 
 
 
-    public void TransionOnLeaveRoom()
+    public void MakeTransionOnLeaveRoom()
     {
         // Remove OnJoinedRoom Objects
         startButton.SetActive(false); 
