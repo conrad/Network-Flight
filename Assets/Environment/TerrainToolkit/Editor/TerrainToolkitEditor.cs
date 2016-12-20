@@ -861,12 +861,12 @@ public class TerrainToolkitEditor : Editor {
 			break;
 			// -------------------------------------------------------------------------------------------------------- TEXTURING TOOLS
 			case 2:
-			Terrain ter = (Terrain) terrain.GetComponent(typeof(Terrain));
-			if (ter == null) {
+			Terrain terra = (Terrain) terrain.GetComponent(typeof(Terrain));
+			if (terra == null) {
 				return;
 			}
-			TerrainData terData = ter.terrainData;
-			terrain.splatPrototypes = terData.splatPrototypes;
+			TerrainData terraData = terra.terrainData;
+			terrain.splatPrototypes = terraData.splatPrototypes;
 			EditorGUILayout.Separator();
 			float mouseX;
 			EditorGUILayout.BeginHorizontal();
@@ -1095,7 +1095,7 @@ public class TerrainToolkitEditor : Editor {
 			EditorGUIUtility.LookLikeControls();
 			EditorGUILayout.EndHorizontal();
 			if (GUI.changed) {
-				terData.splatPrototypes = terrain.splatPrototypes;
+				terraData.splatPrototypes = terrain.splatPrototypes;
 			}
 			if (nTextures == 0 && !assignTexture) {
 				EditorGUILayout.BeginHorizontal();
@@ -1114,7 +1114,7 @@ public class TerrainToolkitEditor : Editor {
 				buttonRect.height = 18;
 				if (GUI.Button(buttonRect, "Add texture")) {
 					terrain.addSplatPrototype(terrain.defaultTexture, nTextures);
-					terData.splatPrototypes = terrain.splatPrototypes;
+					terraData.splatPrototypes = terrain.splatPrototypes;
 					EditorUtility.SetDirty(terrain);
 				}
 				EditorGUILayout.EndHorizontal();
