@@ -56,6 +56,9 @@ PluginImporter:
         DontProcess: False
         PlaceholderPath: 
         SDK: AnySDK
+    XboxOne:
+      enabled: 1
+      settings: {}
     iOS:
       enabled: 0
       settings:

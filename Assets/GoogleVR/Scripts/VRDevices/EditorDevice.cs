@@ -43,16 +43,9 @@ namespace Gvr.Internal {
 
     // Since we can check all these settings by asking Gvr.Instance, no need
     // to keep a separate copy here.
-    public override void SetUILayerEnabled(bool enabled) {}
     public override void SetVRModeEnabled(bool enabled) {}
     public override void SetDistortionCorrectionEnabled(bool enabled) {}
-    public override void SetSettingsButtonEnabled(bool enabled) {}
-    public override void SetAlignmentMarkerEnabled(bool enabled) {}
-    public override void SetVRBackButtonEnabled(bool enabled) {}
-    public override void SetShowVrBackButtonOnlyInVR(bool only) {}
     public override void SetNeckModelScale(float scale) {}
-    public override void SetAutoDriftCorrectionEnabled(bool enabled) {}
-    public override void SetElectronicDisplayStabilizationEnabled(bool enabled) {}
 
     private Quaternion initialRotation = Quaternion.identity;
 
@@ -97,7 +90,6 @@ namespace Gvr.Internal {
       var neck = (rot * neckOffset - neckOffset.y * Vector3.up) * GvrViewer.Instance.NeckModelScale;
       headPose.Set(neck, rot);
 
-      triggered = Input.GetMouseButtonDown(0);
       tilted = Input.GetKeyUp(KeyCode.Escape);
     }
 

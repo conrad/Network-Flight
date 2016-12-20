@@ -34,22 +34,8 @@ public class GvrViewerEditor : Editor {
       "The screen resolution is multiplied by this value when creating the " +
       "RenderTexture for the stereo screen.");
 
-  GUIContent autoDriftCorrectionLabel = new GUIContent("Auto Drift Correction",
-      "When enabled, drift in the gyro readings is estimated and removed.");
-
   GUIContent neckModelScaleLabel = new GUIContent("Neck Model Scale",
       "The scale factor of the builtin neck model [0..1].  To disable, set to 0.");
-
-  GUIContent alignmentMarkerLabel = new GUIContent("Alignment Marker",
-      "Whether to draw the alignment marker. The marker is a vertical line that splits " +
-      "the viewport in half, designed to help users align the screen with the viewer.");
-
-  GUIContent settingsButtonLabel = new GUIContent("Settings Button",
-      "Whether to draw the settings button. The settings button allows the " +
-      "user to pair their phone with a specific Cardboard viewer model");
-
-  GUIContent backButtonLabel = new GUIContent("Back Button",
-      "Whether to draw the onscreen Back Button.");
 
   GUIContent editorSettingsLabel = new GUIContent("Unity Editor Emulation Settings",
       "Controls for the in-editor emulation of a Cardboard viewer.");
@@ -67,6 +53,12 @@ public class GvrViewerEditor : Editor {
   public override void OnInspectorGUI() {
     GUI.changed = false;
 
+    // Add clickable script field, as would have been provided by DrawDefaultInspector()
+    MonoScript script = MonoScript.FromMonoBehaviour (target as MonoBehaviour);
+    EditorGUI.BeginDisabledGroup (true);
+    EditorGUILayout.ObjectField ("Script", script, typeof(MonoScript), false);
+    EditorGUI.EndDisabledGroup ();
+
     GUIStyle headingStyle = new GUIStyle(GUI.skin.label);
     headingStyle.fontStyle = FontStyle.Bold;
 
@@ -75,7 +67,7 @@ public class GvrViewerEditor : Editor {
     EditorGUILayout.LabelField("General Settings", headingStyle);
     gvrViewer.VRModeEnabled =
         EditorGUILayout.Toggle(vrModeLabel, gvrViewer.VRModeEnabled);
-    gvrViewer.DistortionCorrection = (GvrViewer.DistortionCorrectionMethod)
+   gvrViewer.DistortionCorrection = (GvrViewer.DistortionCorrectionMethod)
         EditorGUILayout.EnumPopup(distortionCorrectionLabel, gvrViewer.DistortionCorrection);
     float oldScale = gvrViewer.StereoScreenScale;
     float newScale = EditorGUILayout.Slider(stereoScreenScale, oldScale, 0.25f, 2.0f);
@@ -84,18 +76,6 @@ public class GvrViewerEditor : Editor {
     }
     gvrViewer.NeckModelScale =
         EditorGUILayout.Slider(neckModelScaleLabel, gvrViewer.NeckModelScale, 0, 1);
-    gvrViewer.AutoDriftCorrection =
-      EditorGUILayout.Toggle(autoDriftCorrectionLabel, gvrViewer.AutoDriftCorrection);
-
-    EditorGUILayout.Separator();
-
-    EditorGUILayout.LabelField("UI Layer Settings", headingStyle);
-    gvrViewer.EnableAlignmentMarker =
-        EditorGUILayout.Toggle(alignmentMarkerLabel, gvrViewer.EnableAlignmentMarker);
-    gvrViewer.EnableSettingsButton =
-        EditorGUILayout.Toggle(settingsButtonLabel, gvrViewer.EnableSettingsButton);
-    gvrViewer.BackButtonMode = (GvrViewer.BackButtonModes)
-        EditorGUILayout.EnumPopup(backButtonLabel, gvrViewer.BackButtonMode);
 
     EditorGUILayout.Separator();
 

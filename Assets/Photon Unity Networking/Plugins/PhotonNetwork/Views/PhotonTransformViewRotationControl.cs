@@ -21,6 +21,15 @@ public class PhotonTransformViewRotationControl
         m_Model = model;
     }
 
+	/// <summary>
+	/// Gets the last rotation that was received through the network
+	/// </summary>
+	/// <returns></returns>
+	public Quaternion GetNetworkRotation()
+	{
+		return m_NetworkRotation;
+	}
+
     public Quaternion GetRotation( Quaternion currentRotation )
     {
         switch( m_Model.InterpolateOption )

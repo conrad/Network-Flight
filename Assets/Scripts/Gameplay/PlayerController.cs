@@ -137,16 +137,15 @@ public class PlayerController : Photon.MonoBehaviour
 
         if (stream.isWriting)
         {
-//            stream.SendNext(this.transform.position);
-//            stream.SendNext(this.transform.rotation);
+            // The order sent must be the same as the order received below.
+            stream.SendNext(leftEye.transform.rotation);
             stream.SendNext(playerLocal.localPosition);
             stream.SendNext(playerLocal.localRotation);
         }
         else
         {
             // Make sure to type cast.
-//            networkPlayerPosition = (Vector3)stream.ReceiveNext();
-//            networkPlayerRotation = (Quaternion)stream.ReceiveNext();
+            avatar.transform.rotation = (Quaternion)stream.ReceiveNext();
             avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
             avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
         }

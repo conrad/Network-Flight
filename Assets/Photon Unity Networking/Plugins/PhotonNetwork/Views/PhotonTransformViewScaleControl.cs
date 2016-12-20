@@ -21,6 +21,15 @@ public class PhotonTransformViewScaleControl
         m_Model = model;
     }
 
+	/// <summary>
+	/// Gets the last scale that was received through the network
+	/// </summary>
+	/// <returns></returns>
+	public Vector3 GetNetworkScale()
+	{
+		return m_NetworkScale;
+	}
+
     public Vector3 GetScale( Vector3 currentScale )
     {
         switch( m_Model.InterpolateOption )

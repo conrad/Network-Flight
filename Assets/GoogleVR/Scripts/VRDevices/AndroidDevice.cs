@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_HAS_GOOGLEVR
 
 using UnityEngine;
 
@@ -36,28 +36,8 @@ namespace Gvr.Internal {
       }
     }
 
-    public override void SetUILayerEnabled(bool enabled) {
-      CallObjectMethod(activityListener, "setUILayerEnabled", enabled);
-    }
-
     public override void SetVRModeEnabled(bool enabled) {
       CallObjectMethod(activityListener, "setVRModeEnabled", enabled);
-    }
-
-    public override void SetSettingsButtonEnabled(bool enabled) {
-      CallObjectMethod(activityListener, "setSettingsButtonEnabled", enabled);
-    }
-
-    public override void SetAlignmentMarkerEnabled(bool enabled) {
-      CallObjectMethod(activityListener, "setAlignmentMarkerEnabled", enabled);
-    }
-
-    public override void SetVRBackButtonEnabled(bool enabled) {
-      CallObjectMethod(activityListener, "setVRBackButtonEnabled", enabled);
-    }
-
-    public override void SetShowVrBackButtonOnlyInVR(bool only) {
-      CallObjectMethod(activityListener, "setShowVrBackButtonOnlyInVR", only);
     }
 
     public override void ShowSettingsDialog() {
@@ -80,4 +60,4 @@ namespace Gvr.Internal {
 }
 /// @endcond
 
-#endif
+#endif  // UNITY_ANDROID && !UNITY_HAS_GOOGLEVR

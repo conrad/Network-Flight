@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/// This class is defined only the editor does not natively support GVR, or if the current
+/// VR player is the in-editor emulator.
+#if !UNITY_HAS_GOOGLEVR || UNITY_EDITOR
+
 using UnityEngine;
 
 /// Performs distortion correction on the rendered stereo screen.  This script
@@ -108,8 +112,9 @@ public class GvrPostRender : MonoBehaviour {
       meshMaterial.SetPass(0);
       Graphics.DrawMeshNow(distortionMesh, transform.position, transform.rotation);
     }
+
     stereoScreen.DiscardContents();
-    if (!GvrViewer.Instance.NativeUILayerSupported && GvrViewer.Instance.UILayerEnabled) {
+    if (!GvrViewer.Instance.NativeUILayerSupported) {
       DrawUILayer();
     }
   }
@@ -125,7 +130,7 @@ public class GvrPostRender : MonoBehaviour {
     distortionMesh.uv = tex;
     distortionMesh.colors = colors;
     distortionMesh.triangles = indices;
-    distortionMesh.Optimize();
+    ;
     distortionMesh.UploadMeshData(true);
   }
 
@@ -254,14 +259,9 @@ public class GvrPostRender : MonoBehaviour {
       ComputeUIMatrix();
     }
     uiMaterial.SetPass(0);
-    if (vrMode && GvrViewer.Instance.EnableSettingsButton) {
-      DrawSettingsButton();
-    }
-    if (vrMode && GvrViewer.Instance.EnableAlignmentMarker) {
-      DrawAlignmentMarker();
-    }
-    if (GvrViewer.Instance.BackButtonMode == GvrViewer.BackButtonModes.On
-        || vrMode && GvrViewer.Instance.BackButtonMode == GvrViewer.BackButtonModes.OnlyInVR) {
+    DrawSettingsButton();
+    DrawAlignmentMarker();
+    if (vrMode) {
       DrawVRBackButton();
     }
   }
@@ -346,3 +346,5 @@ public class GvrPostRender : MonoBehaviour {
   private void DrawVRBackButton() {
   }
 }
+
+#endif // !UNITY_HAS_GOOGLEVR || UNITY_EDITOR
