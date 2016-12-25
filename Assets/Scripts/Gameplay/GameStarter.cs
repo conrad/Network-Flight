@@ -143,8 +143,6 @@ public class GameStarter : MonoBehaviour
 
     private Vector3 FindPlayerPosition()
     {
-        int playerNum = GameConfig.playerNumber;
-
         Vector3 topPlayerPos = new Vector3(
             spawnPoint.transform.position.x,        //  spawnPoints[playerNum-1].position.x,
             GameConfig.farTopRightCorner.y - 10f,

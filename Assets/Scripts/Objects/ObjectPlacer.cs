@@ -43,7 +43,6 @@ public class ObjectPlacer
 
         if (Physics.Raycast(attemptPosition, direction, out hit, targetHeightFromGround)) 
         {
-            Debug.Log("SHAZAM! Ray hit & placed at " + attemptPosition);
             return attemptPosition.y;
         }
 

@@ -11,7 +11,7 @@ public class GameConfig
     public float playerForwardSpeed = 40f;
     public float playerRotationSpeed = 300f;
     public int totalPickUps = 11;
-    public float timeLimit = 10f;
+    public float timeLimit = 90f;
     public float restartDelay = 10.0f;
     public string VERSION = "v0.1.0";
     public int playerNumber;
