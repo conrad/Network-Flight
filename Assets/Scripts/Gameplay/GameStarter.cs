@@ -12,8 +12,8 @@ public class GameStarter : MonoBehaviour
     public GameObject playerPrefab; 
     public GameObject pickUpPrefab;
     public GameObject scorePrefab;
-    public GameObject spawnPoint;
-    public Transform[] spawnPoints;
+    public GameObject spawnPoint1;
+    public GameObject spawnPoint2;
     public float pickUpPositionY = 50.0f;
     public float loadDelay = 10.0f;
     public string roomName = "";
@@ -143,10 +143,12 @@ public class GameStarter : MonoBehaviour
 
     private Vector3 FindPlayerPosition()
     {
+        GameObject spawn = GetSpawnPoint();
+
         Vector3 topPlayerPos = new Vector3(
-            spawnPoint.transform.position.x,        //  spawnPoints[playerNum-1].position.x,
+            spawn.transform.position.x, 
             GameConfig.farTopRightCorner.y - 10f,
-            spawnPoint.transform.position.z         //  spawnPoints[playerNum-1].position.z
+            spawn.transform.position.z 
         );
 
         float playerHeight = objectPlacer.GenerateObjectHeight(
@@ -158,10 +160,21 @@ public class GameStarter : MonoBehaviour
         );
             
         return new Vector3(
-            spawnPoint.transform.position.x,    //  spawnPoints[0].position.x, 
+            spawn.transform.position.x, 
             playerHeight,
-            spawnPoint.transform.position.z     //  spawnPoints[0].position.z
+            spawn.transform.position.z 
         );
+    }
+
+
+
+    private GameObject GetSpawnPoint()
+    {
+        if (GameConfig.playerNumber >= 2) {
+            return spawnPoint2;
+        }
+
+        return spawnPoint1;
     }
 }
 
