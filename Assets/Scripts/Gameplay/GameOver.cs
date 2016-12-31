@@ -30,10 +30,6 @@ public class GameOver : MonoBehaviour
 
         SetGameOverMesh();
         SetCountdownMesh();
-
-        PhotonNetwork.Disconnect ();
-        GameObject networkManager = GameObject.Find("PhotonNetworkManager");
-        Destroy(networkManager);
     }
 
 
@@ -50,7 +46,7 @@ public class GameOver : MonoBehaviour
         SetCountdownMesh();
 
         if (countDownTime <= 0) {
-            ReturnToMenu();
+            GoToTransitionToMenu();
         }
     }
 
@@ -77,9 +73,9 @@ public class GameOver : MonoBehaviour
 
 
 
-    void ReturnToMenu()
+    void GoToTransitionToMenu()
     {
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("TransitionToMenu");
     }
 }
 

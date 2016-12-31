@@ -2,7 +2,6 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using System.Runtime.InteropServices;
 
 
@@ -199,10 +198,6 @@ public class ScoringSystem : Photon.MonoBehaviour
             gameOver.transform.parent = playerView.transform;
             gameOver.transform.localPosition = new Vector3(-4f, 2f, 8f);
             gameOver.transform.rotation = playerView.transform.rotation;
-//            gameOverScript.setPlayerViewObject(playerView);
-//            gameOverScript.setTransform();
-
-//            StartCoroutine(restartAfterTime(GAME_CONFIG.restartDelay));
         }
     }
 }

@@ -37,6 +37,13 @@ public class NetworkManager : Photon.MonoBehaviour
 
 
 
+    void OnDestroy()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+
+
     void OnJoinedLobby() {
         Debug.Log("Joined Lobby");
         if (SceneManager.GetActiveScene().name == "Menu") {
