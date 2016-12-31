@@ -22,7 +22,7 @@ public class NetworkManager : Photon.MonoBehaviour
         DontDestroyOnLoad(transform.gameObject);
 
         GameConfig = GameConfig.Instance();     // Use the instance method to ensure GameConfig singleton.
-        roomName = GameConfig.defaultRoomName;
+//        roomName = GameConfig.defaultRoomName;
     }
 
 
@@ -55,20 +55,21 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public void JoinRoom() 
     {
-        Debug.Log("Joining room...");
         if (SceneManager.GetActiveScene().name == "Menu") {
             if (roomInput.text.Length > 0) {
                 roomName = roomInput.text;
             }
-        }
+            if (roomName.Length > 0) {          // Do this check separately in case default room name is being used.
+                Debug.Log("Joining room...");
+                menuObjectHandler.MakeTransitionPreJoinRoom();
 
-        menuObjectHandler.MakeTransitionPreJoinRoom();
+                RoomOptions roomOptions = new RoomOptions() { IsVisible = false, MaxPlayers = 2 };
+                bool hasJoined = PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
 
-        RoomOptions roomOptions = new RoomOptions() { IsVisible = false, MaxPlayers = 2 };
-        bool hasJoined = PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
-
-        if (!hasJoined) {
-            menuObjectHandler.MakeTransitionBackToLobby();
+                if (!hasJoined) {
+                    menuObjectHandler.MakeTransitionBackToLobby();
+                }
+            }
         }
     }
 
