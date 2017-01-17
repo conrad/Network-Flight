@@ -138,20 +138,18 @@ public class PlayerController : Photon.MonoBehaviour
          * that for reading to keep things straight.
          */
         if (stream.isWriting) {
-//            stream.SendNext(leftEye.transform.rotation);
 //            stream.SendNext(playerLocal.localPosition);
-//            stream.SendNext(playerLocal.localRotation);
             stream.SendNext(avatar.transform.position);
             stream.SendNext(avatar.transform.rotation);
-            Debug.Log("sent vars: " + avatar.transform.position.GetType() + " " + avatar.transform.rotation.GetType());
+            stream.SendNext(playerLocal.localRotation);
+//            Debug.Log("sent vars: " + avatar.transform.position.GetType() + " " + avatar.transform.rotation.GetType());
 
         } else {
             // Make sure to type cast.
-//            avatar.transform.rotation = (Quaternion)stream.ReceiveNext();
 //            avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
-//            avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
             avatar.transform.position = (Vector3)stream.ReceiveNext();
             avatar.transform.rotation = (Quaternion)stream.ReceiveNext();
+            avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
         }
     }
 
@@ -208,33 +206,6 @@ public class PlayerController : Photon.MonoBehaviour
 
 
 
-
-
-
-//////////////////////////////////////////////////////
-// FOR LERPING - MAKING MOVEMENTS LOOKS SMOOTH
-//////////////////////////////////////////////////////
-// while alive do this state-machine
-// Make this a co-routine in order to avoid hogging resources.
-//    IEnumerator Alive()
-//    {
-//        while(isAlive) {
-//            // Lerping is like Tweening. It smooths movements out.
-//            transform.position = Vector3.Lerp(
-//                transform.position,
-//                position,
-//                Time.deltaTime * lerpSmoothing
-//            );
-//            transform.rotation = Quaternion.Lerp(
-//                transform.rotation,
-//                rotation,
-//                Time.deltaTime * lerpSmoothing
-//            );
-//
-//            yield return null;
-//        }
-//    }
-//////////////////////////////////////////////////////
 
 
 
