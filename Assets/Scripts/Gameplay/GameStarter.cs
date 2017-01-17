@@ -98,7 +98,7 @@ public class GameStarter : MonoBehaviour
         if (!isSoloGame) {
             GameObject playerScore = PhotonNetwork.Instantiate(
                                          scorePrefab.name, 
-                                         new Vector3(0f, 590f + (playerNumber * 95), 0f),
+                                         new Vector3(0f, 580f + (playerNumber * 120), 0f),
                                          Quaternion.identity,
                                          0
                                      );

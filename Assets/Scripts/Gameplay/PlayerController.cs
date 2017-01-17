@@ -24,30 +24,27 @@ public class PlayerController : Photon.MonoBehaviour
     private Vector3 position;
     private float lerpSmoothing = 5f;
     private bool startPhotonIsMineCalled = false;
-    private bool calledLogged = false;
 
 
 
 	void Start () {  
-        GameConfig = GameConfig.Instance();
+        GameConfig    = GameConfig.Instance();
+        playerLocal   = this.transform.Find("GvrMain/Head/Main Camera/Main Camera Left");
         rotationSpeed = GameConfig.playerRotationSpeed;
-        forwardSpeed = GameConfig.playerForwardSpeed;
-        audio = GetComponent<AudioSource>();
+        forwardSpeed  = GameConfig.playerForwardSpeed;
+        audio         = GetComponent<AudioSource>();
            
 
         if (photonView.isMine || GameConfig.isSoloGame)  {
             startPhotonIsMineCalled = true;
             rb = GetComponent<Rigidbody>();
             forwardSpeed = GameConfig.playerForwardSpeed;
-            playerLocal = this.transform.Find("GvrMain/Head/Main Camera/Main Camera Left");
 
             avatar.SetActive(false);
 
-            AudioListener listener = GetComponent<AudioListener>();
-            listener.enabled = true;
-
             GvrViewer viewer = GetComponentInChildren<GvrViewer>();
             viewer.enabled = true;
+            Debug.Log("viewer enabled: " + viewer);
 
             GvrEye[] eyes = GetComponentsInChildren<GvrEye>(true);
             foreach (GvrEye eye in eyes)
@@ -56,6 +53,7 @@ public class PlayerController : Photon.MonoBehaviour
             GvrAudioListener gvrListener = GetComponentInChildren<GvrAudioListener>();
             if (gvrListener) {
                 gvrListener.enabled = true;
+                Debug.Log("listener enabled: " + gvrListener);
             }
 
             Camera[] cameras = GetComponentsInChildren<Camera>(true);
@@ -65,8 +63,8 @@ public class PlayerController : Photon.MonoBehaviour
             GameObject scoring = GameObject.FindWithTag("Scoring System");
             scoringScript = scoring.GetComponent<ScoringSystem>();
             scoringScript.AddPlayer(playerNumber);
-        } else {
-            StartCoroutine("LerpPlayerPosition");
+//        } else {
+//            StartCoroutine("LerpPlayerPosition");
         }
     }
 
@@ -139,23 +137,21 @@ public class PlayerController : Photon.MonoBehaviour
          * You must have the order of writing be the same order as 
          * that for reading to keep things straight.
          */
-        if (!startPhotonIsMineCalled && !calledLogged) {
-            Debug.Log("OnPhotonSerializedView when Start NOT CALLED!");
-        }
+        if (stream.isWriting) {
+//            stream.SendNext(leftEye.transform.rotation);
+//            stream.SendNext(playerLocal.localPosition);
+//            stream.SendNext(playerLocal.localRotation);
+            stream.SendNext(avatar.transform.position);
+            stream.SendNext(avatar.transform.rotation);
+            Debug.Log("sent vars: " + avatar.transform.position.GetType() + " " + avatar.transform.rotation.GetType());
 
-        if (stream.isWriting)
-        {
-            // The order sent must be the same as the order received below.
-            stream.SendNext(leftEye.transform.rotation);
-            stream.SendNext(playerLocal.localPosition);
-            stream.SendNext(playerLocal.localRotation);
-        }
-        else
-        {
+        } else {
             // Make sure to type cast.
+//            avatar.transform.rotation = (Quaternion)stream.ReceiveNext();
+//            avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
+//            avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
+            avatar.transform.position = (Vector3)stream.ReceiveNext();
             avatar.transform.rotation = (Quaternion)stream.ReceiveNext();
-            avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
-            avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
         }
     }
 
