@@ -9,11 +9,15 @@ public class PlayerController : Photon.MonoBehaviour
     public GameObject outOfBoundsView;
     public int playerNumber;
 
+    Vector3 realPosition = Vector3.zero;
+    Quaternion realRotation = Quaternion.identity;
+    private Transform playerLocal;
+    private Vector3 position;
+
     private GameConfig GameConfig;
     private Rigidbody rb;
     private bool isMoving = true;
     private Vector3 axis;    
-    private Transform playerLocal;
     private int score = 0;
     private ScoringSystem scoringScript;
     private Score scoresScript;       // http://answers.unity3d.com/questions/7555/how-do-i-call-a-function-in-another-gameobjects-sc.html
@@ -21,7 +25,6 @@ public class PlayerController : Photon.MonoBehaviour
     private float rotationSpeed;
     private AudioSource audio;
     private bool isAlive = true;
-    private Vector3 position;
     private float lerpSmoothing = 5f;
     private bool startPhotonIsMineCalled = false;
 
@@ -86,6 +89,11 @@ public class PlayerController : Photon.MonoBehaviour
             }
 
             FlightMode();  
+        } else {
+            transform.position = Vector3.Lerp (transform.position, realPosition, 0.1f);
+            realPosition       = transform.position;
+            transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
+            realRotation       = transform.rotation;
         }
 	}
 
@@ -93,10 +101,6 @@ public class PlayerController : Photon.MonoBehaviour
 
     void FlightMode () 
     {    
-        if (!photonView.isMine && !GameConfig.isSoloGame) {
-            Debug.Log("This is not my beautiful flight!");        
-        }
-
         Vector3 nextAxis = GetRotation(leftEye);
         RotatePlayer(nextAxis);
         MovePlayer();
@@ -125,8 +129,7 @@ public class PlayerController : Photon.MonoBehaviour
 
     void MovePlayer()
     {
-        rb.velocity = leftEye.transform.forward * forwardSpeed;
-        position = rb.velocity;
+        rb.velocity = leftEye.transform.forward * forwardSpeed;    //  position = rb.velocity;
     }
 
 
@@ -138,18 +141,12 @@ public class PlayerController : Photon.MonoBehaviour
          * that for reading to keep things straight.
          */
         if (stream.isWriting) {
-//            stream.SendNext(playerLocal.localPosition);
-            stream.SendNext(avatar.transform.position);
-            stream.SendNext(avatar.transform.rotation);
-            stream.SendNext(playerLocal.localRotation);
-//            Debug.Log("sent vars: " + avatar.transform.position.GetType() + " " + avatar.transform.rotation.GetType());
-
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
         } else {
             // Make sure to type cast.
-//            avatar.transform.localPosition = (Vector3)stream.ReceiveNext();
-            avatar.transform.position = (Vector3)stream.ReceiveNext();
-            avatar.transform.rotation = (Quaternion)stream.ReceiveNext();
-            avatar.transform.localRotation = (Quaternion)stream.ReceiveNext();
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
         }
     }
 
@@ -182,23 +179,23 @@ public class PlayerController : Photon.MonoBehaviour
 
 
     // Lerping is like Tweening. It smooths movements out.
-    IEnumerator LerpPlayerPosition()         // Making this a co-routine avoids hogging resources.
-    {
-        while(isAlive) {
-            transform.position = Vector3.Lerp(  
-                transform.position,
-                position,
-                Time.deltaTime * lerpSmoothing
-            );
-            transform.rotation = Quaternion.Lerp(
-                transform.rotation,
-                leftEye.transform.rotation,
-                Time.deltaTime * lerpSmoothing
-            );
-
-            yield return null;
-        }
-    }
+//    IEnumerator LerpPlayerPosition()         // Making this a co-routine avoids hogging resources.
+//    {
+//        while(isAlive) {
+//            transform.position = Vector3.Lerp(  
+//                transform.position,
+//                position,
+//                Time.deltaTime * lerpSmoothing
+//            );
+//            transform.rotation = Quaternion.Lerp(
+//                transform.rotation,
+//                leftEye.transform.rotation,
+//                Time.deltaTime * lerpSmoothing
+//            );
+//
+//            yield return null;
+//        }
+//    }
 }
 
 
