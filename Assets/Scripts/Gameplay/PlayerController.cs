@@ -2,24 +2,22 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : Photon.MonoBehaviour //PunBehaviour
+public class PlayerController : Photon.MonoBehaviour
 {
     public GameObject leftEye;
     public GameObject avatar;
     public GameObject outOfBoundsView;
     public int playerNumber;
 
-    Vector3 realPosition = Vector3.zero;
-    Quaternion realRotation = Quaternion.identity;
-    private Vector3 position;
-
+	private Vector3 realPosition = Vector3.zero;
+	private Quaternion realRotation = Quaternion.identity;
     private GameConfig GameConfig;
     private Rigidbody rb;
     private bool isMoving = true;
     private Vector3 axis;    
     private int score = 0;
     private ScoringSystem scoringScript;
-    private Score scoresScript;       // http://answers.unity3d.com/questions/7555/how-do-i-call-a-function-in-another-gameobjects-sc.html
+    private Score scoresScript;
     private float forwardSpeed;    
     private float rotationSpeed;
     private AudioSource audio;
@@ -51,16 +49,19 @@ public class PlayerController : Photon.MonoBehaviour //PunBehaviour
             foreach (GvrEye eye in eyes)
                 eye.enabled = true;
 
+			Camera[] cameras = GetComponentsInChildren<Camera>(true);
+			foreach (Camera camera in cameras) 
+				camera.enabled = true;		
+
             GvrAudioListener gvrListener = GetComponentInChildren<GvrAudioListener>();
             if (gvrListener) {
                 gvrListener.enabled = true;
                 Debug.Log("listener enabled: " + gvrListener);
             }
 
-            Camera[] cameras = GetComponentsInChildren<Camera>(true);
-            foreach (Camera camera in cameras) 
-                camera.enabled = true;
-        
+			AudioListener listener = GetComponent<AudioListener> ();
+			listener.enabled = true;
+
             GameObject scoring = GameObject.FindWithTag("Scoring System");
             scoringScript = scoring.GetComponent<ScoringSystem>();
             scoringScript.AddPlayer(playerNumber);
@@ -86,9 +87,8 @@ public class PlayerController : Photon.MonoBehaviour //PunBehaviour
 
             FlightMode();  
         } else {
-			transform.position = Vector3.Lerp(transform.position, this.realPosition, Time.deltaTime * 5);
-			transform.rotation = Quaternion.Lerp(transform.rotation, this.realRotation, Time.deltaTime * 5);
-			Debug.Log ("rotation: " + this.realRotation);
+			transform.position = Vector3.Lerp(transform.position, this.realPosition, Time.deltaTime * rotationSpeed);
+			transform.rotation = Quaternion.Lerp(transform.rotation, this.realRotation, Time.deltaTime * rotationSpeed);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class PlayerController : Photon.MonoBehaviour //PunBehaviour
 
     void MovePlayer()
     {
-        rb.velocity = leftEye.transform.forward * forwardSpeed;    //  position = rb.velocity;
+        rb.velocity = leftEye.transform.forward * forwardSpeed; 
     }
 
 
