@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : Photon.MonoBehaviour 
+public class PlayerController : Photon.MonoBehaviour //PunBehaviour
 {
     public GameObject leftEye;
     public GameObject avatar;
@@ -11,7 +11,6 @@ public class PlayerController : Photon.MonoBehaviour
 
     Vector3 realPosition = Vector3.zero;
     Quaternion realRotation = Quaternion.identity;
-    private Transform playerLocal;
     private Vector3 position;
 
     private GameConfig GameConfig;
@@ -32,7 +31,6 @@ public class PlayerController : Photon.MonoBehaviour
 
 	void Start () {  
         GameConfig    = GameConfig.Instance();
-        playerLocal   = this.transform.Find("GvrMain/Head/Main Camera/Main Camera Left");
         rotationSpeed = GameConfig.playerRotationSpeed;
         forwardSpeed  = GameConfig.playerForwardSpeed;
         audio         = GetComponent<AudioSource>();
@@ -66,8 +64,6 @@ public class PlayerController : Photon.MonoBehaviour
             GameObject scoring = GameObject.FindWithTag("Scoring System");
             scoringScript = scoring.GetComponent<ScoringSystem>();
             scoringScript.AddPlayer(playerNumber);
-//        } else {
-//            StartCoroutine("LerpPlayerPosition");
         }
     }
 
@@ -90,11 +86,10 @@ public class PlayerController : Photon.MonoBehaviour
 
             FlightMode();  
         } else {
-            transform.position = Vector3.Lerp (transform.position, realPosition, 0.1f);
-            realPosition       = transform.position;
-            transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
-            realRotation       = transform.rotation;
-        }
+			transform.position = Vector3.Lerp(transform.position, this.realPosition, Time.deltaTime * 5);
+			transform.rotation = Quaternion.Lerp(transform.rotation, this.realRotation, Time.deltaTime * 5);
+			Debug.Log ("rotation: " + this.realRotation);
+		}
 	}
 
 
@@ -142,11 +137,11 @@ public class PlayerController : Photon.MonoBehaviour
          */
         if (stream.isWriting) {
             stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
+			stream.SendNext(leftEye.transform.rotation);
         } else {
             // Make sure to type cast.
-            transform.position = (Vector3)stream.ReceiveNext();
-            transform.rotation = (Quaternion)stream.ReceiveNext();
+			this.realPosition = (Vector3)stream.ReceiveNext();
+			this.realRotation = (Quaternion)stream.ReceiveNext();
         }
     }
 
@@ -175,8 +170,20 @@ public class PlayerController : Photon.MonoBehaviour
             outOfBoundsView.SetActive(false);
         }
     }
+}
+	
 
 
+
+
+
+
+
+
+
+
+
+	//            StartCoroutine("LerpPlayerPosition");
 
     // Lerping is like Tweening. It smooths movements out.
 //    IEnumerator LerpPlayerPosition()         // Making this a co-routine avoids hogging resources.
@@ -196,7 +203,6 @@ public class PlayerController : Photon.MonoBehaviour
 //            yield return null;
 //        }
 //    }
-}
 
 
 
