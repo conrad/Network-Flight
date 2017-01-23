@@ -2,9 +2,9 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class SplashScreenDelayed : MonoBehaviour {
+public class DelayedSceneChange : MonoBehaviour {
     public float delayTime = 3.0f;
-
+	public string nextScene = "Menu";
 
 
     IEnumerator Start() 
@@ -12,6 +12,6 @@ public class SplashScreenDelayed : MonoBehaviour {
         // Use IEnumerator when you're using yield statements.
         yield return new WaitForSeconds(delayTime);
 
-        SceneManager.LoadScene("Menu");
+		SceneManager.LoadScene(nextScene);
     }
 }

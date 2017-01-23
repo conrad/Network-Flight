@@ -39,9 +39,7 @@ public class NetworkManager : Photon.MonoBehaviour
 
     void OnDestroy()
     {
-        if (SceneManager.GetActiveScene().name == "Desert" 
-			|| SceneManager.GetActiveScene().name == "TransitionToMenu") 
-		{
+		if (SceneManager.GetActiveScene().name == "Desert") {      //	|| SceneManager.GetActiveScene().name == "TransitionToMenu") 
             SceneManager.LoadScene("Menu");
         }
     }
