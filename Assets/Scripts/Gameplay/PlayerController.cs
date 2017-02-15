@@ -70,7 +70,7 @@ public class PlayerController : Photon.MonoBehaviour
 
 
 
-    void Update () 
+    void FixedUpdate () 
     {   
         if (photonView.isMine || GameConfig.isSoloGame) {
             if (Input.touchCount > 1 && isMoving) {

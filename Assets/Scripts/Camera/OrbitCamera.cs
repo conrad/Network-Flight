@@ -8,7 +8,7 @@ public class OrbitCamera : MonoBehaviour {
 
 
 
-    void Update () {
+    void FixedUpdate () {
         transform.LookAt(target.transform); 
 
         transform.position += transform.right * speed * Time.deltaTime;
