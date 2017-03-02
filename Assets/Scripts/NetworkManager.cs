@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+using System;	
 
 
 public class NetworkManager : Photon.MonoBehaviour 
@@ -11,29 +11,15 @@ public class NetworkManager : Photon.MonoBehaviour
     public InputField roomInput;
     public string roomName = "";
 
-    GameConfig GameConfig;
+	GameConfig gameConfig;
     MenuObjectHandler menuObjectHandler;
     int numberOfPlayers = 0;
 
 
-
-    void Awake()
-    {
-        DontDestroyOnLoad(transform.gameObject);
-
-        GameConfig = GameConfig.Instance();     // Use the instance method to ensure GameConfig singleton.
-//        roomName = GameConfig.defaultRoomName;
-    }
-
-
-
-    void Start() 
-    {
-        if (SceneManager.GetActiveScene().name == "Menu") {
-            menuObjectHandler = ObjectHandler.GetComponent<MenuObjectHandler>();
-            PhotonNetwork.ConnectUsingSettings(GameConfig.VERSION);
-        }
-    }
+	void Awake()
+	{
+		menuObjectHandler = ObjectHandler.GetComponent<MenuObjectHandler>();
+	}
 
 
 
@@ -48,10 +34,38 @@ public class NetworkManager : Photon.MonoBehaviour
 
     void OnJoinedLobby() {
         Debug.Log("Joined Lobby");
-        if (SceneManager.GetActiveScene().name == "Menu") {
-            menuObjectHandler.MakeTransitionOnJoinedLobby();
-        }
+		menuObjectHandler.MakeTransitionOnJoinedLobby();
     }
+
+
+
+	public void ChooseSinglePlayer()
+	{
+		gameConfig = GameConfig.Instance(); 	  // Use the instance method to ensure use of GameConfig singleton.
+		gameConfig.isSoloGame = true;
+
+		menuObjectHandler.PrepareForSoloGame();
+	}
+
+
+
+	public void ChooseMultiplayer() 
+	{
+		DontDestroyOnLoad(transform.gameObject);
+		gameConfig = GameConfig.Instance(); 	  // Use the instance method to ensure use of GameConfig singleton.
+		gameConfig.isSoloGame = false;
+		roomName = gameConfig.defaultRoomName;
+
+		menuObjectHandler.HideModeButtons();
+	
+		try {
+			PhotonNetwork.ConnectUsingSettings(gameConfig.VERSION);
+		} 
+		catch (Exception e) {
+			// Create message for failure here: "Error: Unable to connect to internet."
+			Debug.Log("Caught the exception here: " + e.Message);
+		}
+	}
 
 
 
@@ -59,7 +73,7 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Menu") {
             if (roomInput.text.Length > 0) {
-                roomName = roomInput.text;
+				roomName = roomInput.text;
             }
             if (roomName.Length > 0) {          // Do this check separately in case default room name is being used.
                 Debug.Log("Joining room...");
@@ -82,7 +96,7 @@ public class NetworkManager : Photon.MonoBehaviour
         int playerNumber = GetNumberOfPlayers();
 
         if (SceneManager.GetActiveScene().name == "Menu") {
-            GameConfig.setPlayerNumber(playerNumber);
+			gameConfig.setPlayerNumber(playerNumber);
             menuObjectHandler.MakeTransitionOnJoinedRoom(playerNumber);
         }
     }
@@ -113,25 +127,46 @@ public class NetworkManager : Photon.MonoBehaviour
     }
 
 
-
-    void EnterDesert()
-    {
-        PhotonNetwork.room.open = false;
-        PhotonNetwork.LoadLevel("Desert");
-    }
-
-
-
+    
     public void StartGame() 
     {
-        if (PhotonNetwork.playerList.Length >= GameConfig.numPlayersForGame) {
-            EnterDesert();
+		if (PhotonNetwork.connected) {
+			if (PhotonNetwork.playerList.Length >= gameConfig.numPlayersForGame) {
+				EnterMultiplayerGame();
+			}
+		} else {
+			EnterSoloGame();
         }
     }
 
 
 
-    public void Back()
+	void EnterMultiplayerGame()
+	{
+		PhotonNetwork.room.open = false;
+		PhotonNetwork.LoadLevel("Desert");
+	}
+
+
+
+	void EnterSoloGame()
+	{
+		SceneManager.LoadScene ("Desert");
+	}
+
+
+
+	public void BackToModeChoice()
+	{
+		menuObjectHandler.TransitionToStart();
+
+		if (PhotonNetwork.connected) {
+			PhotonNetwork.Disconnect();
+		}
+	}
+
+
+    public void BackToJoin()
     {
         menuObjectHandler.MakeTransionOnLeaveRoom();
         PhotonNetwork.LeaveRoom();

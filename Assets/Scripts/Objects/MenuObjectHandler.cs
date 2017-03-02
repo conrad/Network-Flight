@@ -5,7 +5,10 @@ using UnityEngine.UI;
 public class MenuObjectHandler : MonoBehaviour 
 {
     public GameObject pickUp;
-    public GameObject roomInput;
+	public GameObject soloButton;
+	public GameObject multiplayerButton;
+	public GameObject backToModesButton;
+	public GameObject roomInput;
     public GameObject joinButton;
     public GameObject instructionsButton;
     public GameObject avatar;
@@ -22,9 +25,43 @@ public class MenuObjectHandler : MonoBehaviour
 
 
 
+	public void HideModeButtons()
+	{
+		soloButton.SetActive (false);
+		multiplayerButton.SetActive (false);
+		backToModesButton.SetActive(true); 
+	}
+
+
+
+	public void ShowModeButtons()
+	{
+		soloButton.SetActive (true);
+		multiplayerButton.SetActive (true);
+		instructions.GetComponent<Text>().enabled = true;
+		backToModesButton.SetActive(false); 
+	}
+
+
+
+	public void TransitionToStart()
+	{
+		ClearUI ();
+
+		if (avatarObject != null) {
+			Destroy (avatarObject);
+		}
+
+		ShowModeButtons ();
+	}
+
+
+
+
     public void MakeTransitionOnJoinedLobby()
     {
         roomInput.SetActive(true);
+		pickUp.SetActive (false);
         joinButton.SetActive(true);
         instructionsButton.SetActive(true);
     }
@@ -37,6 +74,7 @@ public class MenuObjectHandler : MonoBehaviour
         joinButton.SetActive(false);
         instructions.GetComponent<Text>().enabled = false;
     }
+
 
 
     public void MakeTransitionBackToLobby()
@@ -55,8 +93,7 @@ public class MenuObjectHandler : MonoBehaviour
         pickUp.SetActive(false);
 
         // Add prefab of avatar and activate Start button and ready text.
-        avatarObject = Instantiate(avatar, new Vector3(-21.5f, 50f, 10.1f), Quaternion.identity) as GameObject;
-        avatarObject.transform.localScale = new Vector3(3f, 3f, 3f);
+		AddPlane();
 
         startButton.SetActive(true); 
         backButton.SetActive(true); 
@@ -71,15 +108,17 @@ public class MenuObjectHandler : MonoBehaviour
 
 
 
-    private void SetTotalPlayersView(int totalNumberOfPlayers)
-    {
-        if (totalPlayers > 1) {
-            totalPlayersView.text = totalPlayers + " PLAYERS TOTAL";
-        } else {
-            totalPlayersView.text = "1 PLAYER PRESENT";
-        }
-    }
+	public void PrepareForSoloGame()
+	{
+		// Remove room inputField, pickUp & button
+		pickUp.SetActive(false);
+		HideModeButtons ();
 
+		AddPlane();
+		startButton.SetActive(true); 
+		instructionsButton.SetActive(true);
+	}
+		
 
 
     public void UpdatePlayerNumber(int numberOfPlayers)
@@ -103,7 +142,43 @@ public class MenuObjectHandler : MonoBehaviour
         roomInput.SetActive(true);
         joinButton.SetActive(true);
         instructions.GetComponent<Text>().enabled = true;
-        pickUp.SetActive(true);
+        pickUp.SetActive(false);
     }
+
+
+
+	private void AddPlane()
+	{
+		// Add prefab of avatar and activate Start button and ready text.
+		avatarObject = Instantiate(avatar, new Vector3(-21.5f, 50f, 10.1f), Quaternion.identity) as GameObject;
+		avatarObject.transform.localScale = new Vector3(3f, 3f, 3f);
+
+		FlatRotator rotator = avatarObject.GetComponent<FlatRotator> ();
+		rotator.speed = 50f;
+		rotator.enabled = true;
+
+	}
+
+
+
+	private void ClearUI()
+	{
+		startButton.SetActive(false); 
+		backButton.SetActive(false); 
+		roomInput.SetActive(false);
+		joinButton.SetActive(false);
+		instructionsButton.SetActive(false);
+		pickUp.SetActive(true);
+	}
+
+
+	private void SetTotalPlayersView(int totalNumberOfPlayers)
+	{
+		if (totalPlayers > 1) {
+			totalPlayersView.text = totalPlayers + " PLAYERS TOTAL";
+		} else {
+			totalPlayersView.text = "1 PLAYER PRESENT";
+		}
+	}
 }
     

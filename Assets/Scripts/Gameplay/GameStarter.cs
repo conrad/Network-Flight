@@ -23,7 +23,7 @@ public class GameStarter : MonoBehaviour
     [SerializeField]Texture2D rockTexture;
     [SerializeField]Texture2D cliffTexture;
 
-    GameConfig GameConfig;
+    GameConfig gameConfig;
     ObjectPlacer objectPlacer;
     string avatarName = "Sports car 1";
 
@@ -31,20 +31,22 @@ public class GameStarter : MonoBehaviour
 
     void Start()
     {
-        GameConfig = GameConfig.Instance();  // Use this method make sure you use singleton.
+        gameConfig = GameConfig.Instance();  // Use this method make sure you use singleton.
         objectPlacer = new ObjectPlacer();
 
-        if (!GameConfig.isSoloGame) {
+		Debug.Log ("isSoloGame: " + gameConfig.isSoloGame);
+
+        if (!gameConfig.isSoloGame) {
             if (PhotonNetwork.inRoom) {
-                AddPlayer(GameConfig.isSoloGame);    
+                AddPlayer(gameConfig.isSoloGame);    
             }
 
             if (PhotonNetwork.isMasterClient) {
-                AddPickUps(GameConfig.isSoloGame);
+                AddPickUps(gameConfig.isSoloGame);
             }
         } else {
-            AddPlayer(GameConfig.isSoloGame);    
-            AddPickUps(GameConfig.isSoloGame);
+            AddPlayer(gameConfig.isSoloGame);    
+            AddPickUps(gameConfig.isSoloGame);
         }
     }
         
@@ -57,19 +59,14 @@ public class GameStarter : MonoBehaviour
 
         if (!isSoloGame) {
             GameObject newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, playerPosition, Quaternion.identity, 0);
-            newPlayer.GetComponent<PlayerController>().playerNumber = GameConfig.playerNumber;
-//            Renderer renderer = newPlayer.transform.FindChild("Sports car 1/body").GetComponent<Renderer>();
-//            SetRendererColor(renderer, GameConfig.playerNumber);
+            newPlayer.GetComponent<PlayerController>().playerNumber = gameConfig.playerNumber;
 
         } else {
             GameObject newPlayer = Instantiate(playerPrefab, playerPosition, Quaternion.identity) as GameObject;
-            newPlayer.transform.FindChild(avatarName).position = newPlayer.transform.position;
-            newPlayer.transform.FindChild("GvrMain").position = newPlayer.transform.position;
-            newPlayer.transform.FindChild("PlayerCollider").position = newPlayer.transform.position;
             newPlayer.GetComponent<PlayerController>().playerNumber = 1;
         }
       
-        AddPlayerScore(GameConfig.playerNumber, GameConfig.isSoloGame);
+        AddPlayerScore(gameConfig.playerNumber, gameConfig.isSoloGame);
     }
 
 
@@ -117,8 +114,8 @@ public class GameStarter : MonoBehaviour
     // Add the items to pick up to the Scene.
     void AddPickUps(bool isSoloGame = false) 
     {
-        Debug.Log("Adding " + GameConfig.totalPickUps + " pick ups to scene");
-        for (var i = 0; i < GameConfig.totalPickUps; i++) {
+        Debug.Log("Adding " + gameConfig.totalPickUps + " pick ups to scene");
+        for (var i = 0; i < gameConfig.totalPickUps; i++) {
             Vector3 pickUpPosition = objectPlacer.GenerateRandomObjectPosition(
                 new Vector3(400f, 700f, 400f),
                 new Vector3(-400f, 0f, -400f),
@@ -147,14 +144,14 @@ public class GameStarter : MonoBehaviour
 
         Vector3 topPlayerPos = new Vector3(
             spawn.transform.position.x, 
-            GameConfig.farTopRightCorner.y - 10f,
+            gameConfig.farTopRightCorner.y - 10f,
             spawn.transform.position.z 
         );
 
         float playerHeight = objectPlacer.GenerateObjectHeight(
             topPlayerPos,   //    Vector3 attemptPosition
             50f,            //    float targetHeightFromGround,
-            GameConfig.farTopRightCorner.y / 2,     //    float defaultHeight,
+            gameConfig.farTopRightCorner.y / 2,     //    float defaultHeight,
             5f,     //    float step, 
             50      //    float attemptsLeft
         );
@@ -170,7 +167,7 @@ public class GameStarter : MonoBehaviour
 
     private GameObject GetSpawnPoint()
     {
-        if (GameConfig.playerNumber >= 2) {
+        if (gameConfig.playerNumber >= 2) {
             return spawnPoint2;
         }
 
@@ -185,17 +182,6 @@ public class GameStarter : MonoBehaviour
 
 
 
-
-
-
-//    IEnumerator DelayForLoading()
-//    {
-//        Debug.Log("WHY AREN'T YOU BEING CALLED?");
-//        print(Time.time);
-//        Debug.Log("KJDHSFHJKSDFHJKSDFKHJSDFHJK");
-//        yield return new WaitForSeconds(loadDelay);
-//        print(Time.time);
-//    }
 
 
 

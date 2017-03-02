@@ -43,7 +43,6 @@ public class PlayerController : Photon.MonoBehaviour
 
             GvrViewer viewer = GetComponentInChildren<GvrViewer>();
             viewer.enabled = true;
-            Debug.Log("viewer enabled: " + viewer);
 
             GvrEye[] eyes = GetComponentsInChildren<GvrEye>(true);
             foreach (GvrEye eye in eyes)
@@ -56,7 +55,6 @@ public class PlayerController : Photon.MonoBehaviour
             GvrAudioListener gvrListener = GetComponentInChildren<GvrAudioListener>();
             if (gvrListener) {
                 gvrListener.enabled = true;
-                Debug.Log("listener enabled: " + gvrListener);
             }
 
 			AudioListener listener = GetComponent<AudioListener> ();
