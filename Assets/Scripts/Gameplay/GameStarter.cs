@@ -17,6 +17,7 @@ public class GameStarter : MonoBehaviour
     public float pickUpPositionY = 50.0f;
     public float loadDelay = 10.0f;
     public string roomName = "";
+
     //Array of textures.
     [SerializeField]Texture2D sandTexture;
     [SerializeField]Texture2D grassTexture;

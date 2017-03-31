@@ -61,7 +61,6 @@ public class MenuObjectHandler : MonoBehaviour
     public void MakeTransitionOnJoinedLobby()
     {
         roomInput.SetActive(true);
-		pickUp.SetActive (false);
         joinButton.SetActive(true);
         instructionsButton.SetActive(true);
     }
@@ -135,6 +134,7 @@ public class MenuObjectHandler : MonoBehaviour
         startButton.SetActive(false); 
         backButton.SetActive(false); 
         Destroy(avatarObject);
+
         playerNumberView.GetComponent<Text>().enabled = false;
         totalPlayersView.GetComponent<Text>().enabled = false;
 
@@ -142,7 +142,7 @@ public class MenuObjectHandler : MonoBehaviour
         roomInput.SetActive(true);
         joinButton.SetActive(true);
         instructions.GetComponent<Text>().enabled = true;
-        pickUp.SetActive(false);
+		pickUp.SetActive(true);
     }
 
 
