@@ -66,7 +66,7 @@ public class GameStarter : MonoBehaviour
             newPlayer.GetComponent<PlayerController>().playerNumber = 1;
         }
       
-//        AddPlayerScore(gameConfig.playerNumber, gameConfig.isSoloGame);
+        AddPlayerScore(gameConfig.playerNumber, gameConfig.isSoloGame);
     }
 
 
@@ -101,14 +101,32 @@ public class GameStarter : MonoBehaviour
                                      );
 
             playerScore.GetComponent<Score>().playerNumber = playerNumber;
-
-			
         } else {
             GameObject playerScore = Instantiate(scorePrefab);
 
             playerScore.GetComponent<Score>().playerNumber = 1;
         }
     }
+
+
+
+//	void ActivateHudScores(int playerNumber, bool isSoloGame)
+//	{
+//		GameObject SingleScore = GameObject.FindGameObjectWithTag("SingleScore");
+//		GameObject Score1 = GameObject.FindGameObjectWithTag("Score1");
+//		GameObject Score2 = GameObject.FindGameObjectWithTag("Score2");
+//
+//		if (!isSoloGame) {
+//			SingleScore.SetActive(false);
+//			Score1.GetComponent<HUDScore>().playerNumber = 1;
+//			Score2.GetComponent<HUDScore>().playerNumber = 1;
+//
+//		} else {
+//			SingleScore.GetComponent<HUDScore>().playerNumber = 1;
+//			Score1.SetActive(false);
+//			Score2.SetActive(false);
+//		}
+//	}
 
 
 

@@ -12,9 +12,12 @@ using System.Runtime.InteropServices;
 public class ScoringSystem : Photon.MonoBehaviour 
 {
     public GameObject gameOverView;
+//	public HUDScore hudScore1;
+//	public HUDScore hudScore2;
 
     private int[] scores = new int[6]; 
-    private Dictionary<int, IScore> scoreboardScripts = new Dictionary<int, IScore>();
+	private Dictionary<int, HUDScore> scoreboardScripts = new Dictionary<int, HUDScore>();
+//    private Dictionary<int, Score> scoreboardScripts = new Dictionary<int, Score>();
     private Dictionary<string, int> highScorerData = new Dictionary<string, int>();
     GameConfig GameConfig;
     private bool isShowGameOverRevealed = false;
@@ -28,6 +31,8 @@ public class ScoringSystem : Photon.MonoBehaviour
         GameConfig = GameConfig.Instance();
         SetInitialHighScorerData();
         highScorerData["totalScored"] = 0;
+
+//		hudScoreboardScripts[1] = hudScore1;
     }
 
 
@@ -54,7 +59,7 @@ public class ScoringSystem : Photon.MonoBehaviour
 
         foreach (GameObject scoreboard in unorderedScoreboards) {
 			HUDScore scoreScript = scoreboard.GetComponent<HUDScore>();
-//			Score scoreScript = scoreboard.GetComponent<IScore>();
+//			Score scoreScript = scoreboard.GetComponent<Score>();
             scoreboardScripts[scoreScript.GetPlayerNumber()] = scoreScript;
         }
     }
