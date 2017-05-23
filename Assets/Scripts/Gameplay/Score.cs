@@ -5,7 +5,7 @@ using UnityEngine.UI;
 /**
  * A class to manage the view of the score view for each player.
  */
-public class Score : Photon.MonoBehaviour 
+public class Score : Photon.MonoBehaviour, IScore
 {
     public int playerNumber;
     public TextMesh scoreTextMesh;

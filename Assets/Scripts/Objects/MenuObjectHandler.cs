@@ -154,7 +154,7 @@ public class MenuObjectHandler : MonoBehaviour
 		avatarObject.transform.localScale = new Vector3(3f, 3f, 3f);
 
 		FlatRotator rotator = avatarObject.GetComponent<FlatRotator> ();
-		rotator.speed = 50f;
+		rotator.speed = -50f;
 		rotator.enabled = true;
 
 	}

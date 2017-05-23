@@ -15,7 +15,7 @@ public class GameConfig
     public float restartDelay = 10.0f;
     public string VERSION = "v0.1.0";
     public int playerNumber;
-    public bool isSoloGame = true; 
+    public bool isSoloGame = false; 
     public Vector3 farTopRightCorner = new Vector3(400f, 700f, 400f);
     public Vector3 nearBottomLeftCorner = new Vector3(-400f, 0f, -400f);
 

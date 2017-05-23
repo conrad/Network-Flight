@@ -12,6 +12,7 @@ public class GameStarter : MonoBehaviour
     public GameObject playerPrefab; 
     public GameObject pickUpPrefab;
     public GameObject scorePrefab;
+	public GameObject hudScorePrefab;
     public GameObject spawnPoint1;
     public GameObject spawnPoint2;
     public float pickUpPositionY = 50.0f;
@@ -26,7 +27,6 @@ public class GameStarter : MonoBehaviour
 
     GameConfig gameConfig;
     ObjectPlacer objectPlacer;
-    string avatarName = "Sports car 1";
 
 
 
@@ -61,13 +61,12 @@ public class GameStarter : MonoBehaviour
         if (!isSoloGame) {
             GameObject newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, playerPosition, Quaternion.identity, 0);
             newPlayer.GetComponent<PlayerController>().playerNumber = gameConfig.playerNumber;
-
         } else {
             GameObject newPlayer = Instantiate(playerPrefab, playerPosition, Quaternion.identity) as GameObject;
             newPlayer.GetComponent<PlayerController>().playerNumber = 1;
         }
       
-        AddPlayerScore(gameConfig.playerNumber, gameConfig.isSoloGame);
+//        AddPlayerScore(gameConfig.playerNumber, gameConfig.isSoloGame);
     }
 
 
@@ -102,7 +101,8 @@ public class GameStarter : MonoBehaviour
                                      );
 
             playerScore.GetComponent<Score>().playerNumber = playerNumber;
-        
+
+			
         } else {
             GameObject playerScore = Instantiate(scorePrefab);
 
