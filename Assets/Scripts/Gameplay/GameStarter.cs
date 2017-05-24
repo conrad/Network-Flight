@@ -66,7 +66,7 @@ public class GameStarter : MonoBehaviour
             newPlayer.GetComponent<PlayerController>().playerNumber = 1;
         }
       
-        AddPlayerScore(gameConfig.playerNumber, gameConfig.isSoloGame);
+//        AddPlayerScore(gameConfig.playerNumber, gameConfig.isSoloGame);
     }
 
 

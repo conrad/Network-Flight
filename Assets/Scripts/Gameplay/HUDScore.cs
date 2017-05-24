@@ -14,16 +14,10 @@ public class HUDScore : Photon.MonoBehaviour, IScore
 	private string text;
 
 
-	void Start()
-	{
-		scoreTextMesh = gameObject.GetComponent<TextMesh>();
-	}
-
-
 	public void UpdateScoreView(int scorePlayerNumber, int newScore)   // int increment = 1
 	{
 		if (scorePlayerNumber == playerNumber) {
-			scoreTextMesh.text = newScore.ToString();
+			GetScoreTextMesh().text = newScore.ToString();
 		}
 	}
 
@@ -40,7 +34,18 @@ public class HUDScore : Photon.MonoBehaviour, IScore
 		if (stream.isWriting) {
 			stream.SendNext(text);
 		} else {
-			scoreTextMesh.text = (string)stream.ReceiveNext();
+			GetScoreTextMesh().text = (string)stream.ReceiveNext();
 		}
+	}
+
+
+
+	private TextMesh GetScoreTextMesh()
+	{
+		if (scoreTextMesh == null) {
+			scoreTextMesh = gameObject.GetComponent<TextMesh>();
+		}
+
+		return scoreTextMesh;
 	}
 }
