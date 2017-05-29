@@ -20,10 +20,9 @@ public class PlayerController : Photon.MonoBehaviour
     private Score scoresScript;
     private float forwardSpeed;    
     private float rotationSpeed;
-    private AudioSource audio;
+    private AudioSource audioSource;
     private bool isAlive = true;
     private float lerpSmoothing = 5f;
-    private bool startPhotonIsMineCalled = false;
 
 
 
@@ -31,11 +30,10 @@ public class PlayerController : Photon.MonoBehaviour
         GameConfig    = GameConfig.Instance();
         rotationSpeed = GameConfig.playerRotationSpeed;
         forwardSpeed  = GameConfig.playerForwardSpeed;
-        audio         = GetComponent<AudioSource>();
+		audioSource   = GetComponent<AudioSource>();
            
 
         if (photonView.isMine || GameConfig.isSoloGame)  {
-            startPhotonIsMineCalled = true;
             rb = GetComponent<Rigidbody>();
             forwardSpeed = GameConfig.playerForwardSpeed;
 
@@ -149,7 +147,7 @@ public class PlayerController : Photon.MonoBehaviour
     {
         if (other.gameObject.CompareTag("Pick Up")) 
         {
-            audio.Play();
+			audioSource.Play();
             other.gameObject.SetActive(false);
             score += 1;
             scoringScript.SetScore(playerNumber, score);
@@ -168,6 +166,36 @@ public class PlayerController : Photon.MonoBehaviour
             outOfBoundsView.SetActive(false);
         }
     }
+
+
+
+//	void ActivateMultiplayerScores(GameObject player)
+//	{
+//		//		GameObject singlePlayerScore = player.transform.Find("SinglePlayerScore").gameObject;
+//		//		GameObject multiPlayerScores = player.transform.Find("Scores").gameObject;
+//		GameObject singlePlayerScore = player.transform.Find("GvrMain/Head/MainCamera/MainCameraLeft/SinglePlayerScore").gameObject;
+//		GameObject multiPlayerScores = player.transform.Find("GvrMain/Head/MainCamera/MainCameraLeft/Scores").gameObject;
+//		//		GameObject score1 = player.transform.Find("GvrMain/Head/MainCamera/MainCameraLeft/Scores/Score1").gameObject;
+//		//		GameObject score2 = player.transform.Find("GvrMain/Head/MainCamera/MainCameraLeft/Scores/Score2").gameObject;
+//
+//		singlePlayerScore.SetActive(false);
+//		multiPlayerScores.SetActive(true);
+//		//		score1.SetActive(true);
+//		//		score2.SetActive(true);
+//	}
+//
+//
+//
+//	void ActivateSinglePlayerScore(GameObject player)
+//	{
+//		GameObject singlePlayerScore = player.transform.Find("GvrMain/Head/MainCamera/MainCameraLeft/SinglePlayerScore").gameObject;
+//		GameObject multiPlayerScores = player.transform.Find("GvrMain/Head/MainCamera/MainCameraLeft/Scores").gameObject;
+//
+//		singlePlayerScore.SetActive(true);
+//		multiPlayerScores.SetActive(false);
+//
+//	}
+
 }
 	
 

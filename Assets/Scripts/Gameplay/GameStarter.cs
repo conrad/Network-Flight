@@ -29,7 +29,6 @@ public class GameStarter : MonoBehaviour
     ObjectPlacer objectPlacer;
 
 
-
     void Start()
     {
         gameConfig = GameConfig.Instance();  // Use this method make sure you use singleton.
@@ -53,21 +52,40 @@ public class GameStarter : MonoBehaviour
         
 
 
-    void AddPlayer(bool isSoloGame = false) {
+    void AddPlayer(bool isSoloGame) {
         initialCamera.SetActive(false);
 
         Vector3 playerPosition = FindPlayerPosition();
 
-        if (!isSoloGame) {
-            GameObject newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, playerPosition, Quaternion.identity, 0);
-            newPlayer.GetComponent<PlayerController>().playerNumber = gameConfig.playerNumber;
+        if (isSoloGame) {
+			GameObject newPlayer = Instantiate(playerPrefab, playerPosition, Quaternion.identity) as GameObject;
+			newPlayer.GetComponent<PlayerController>().playerNumber = 1;
+			DectivateMultiplayerScores(newPlayer);
         } else {
-            GameObject newPlayer = Instantiate(playerPrefab, playerPosition, Quaternion.identity) as GameObject;
-            newPlayer.GetComponent<PlayerController>().playerNumber = 1;
+			GameObject newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, playerPosition, Quaternion.identity, 0);
+			newPlayer.GetComponent<PlayerController>().playerNumber = gameConfig.playerNumber;
+			DeactivateSinglePlayerScore(newPlayer);
         }
       
-//        AddPlayerScore(gameConfig.playerNumber, gameConfig.isSoloGame);
+		// TODO: Use this method only if you want the large spinning scores in the center of envionment.
+		// AddPlayerScore(gameConfig.playerNumber, gameConfig.isSoloGame);
     }
+
+
+
+	void DeactivateSinglePlayerScore(GameObject player)
+	{
+		GameObject singlePlayerScore = player.transform.Find("GvrMain/Head/Main Camera/Main Camera Left/Single Player Score").gameObject;
+		singlePlayerScore.SetActive(false);
+	}
+
+
+
+	void DectivateMultiplayerScores(GameObject player)
+	{
+		GameObject multiPlayerScores = player.transform.Find("GvrMain/Head/Main Camera/Main Camera Left/Scores").gameObject;
+		multiPlayerScores.SetActive(false);
+	}
 
 
 

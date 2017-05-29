@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/**
+ * This class moves objects after a given target, unlike Mover, which just moves objects forward.
+ */ 
 public class ObjectMover : MonoBehaviour 
 {
     public Transform target;

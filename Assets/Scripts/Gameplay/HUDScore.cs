@@ -17,7 +17,8 @@ public class HUDScore : Photon.MonoBehaviour, IScore
 	public void UpdateScoreView(int scorePlayerNumber, int newScore)   // int increment = 1
 	{
 		if (scorePlayerNumber == playerNumber) {
-			GetScoreTextMesh().text = newScore.ToString();
+			text = newScore.ToString();
+			GetScoreTextMesh().text = text;
 		}
 	}
 
